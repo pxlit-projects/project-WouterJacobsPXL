@@ -4,3 +4,7 @@
   grid-gap: 1rem;
   padding: 1rem;
 }
+
+.main-container {
+  background-color: #faf9fd;
+}

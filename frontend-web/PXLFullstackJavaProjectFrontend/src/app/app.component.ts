@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {NavbarComponent} from "./navbar/navbar.component";
 import {PostcardComponent} from "./posts/postcard/postcard.component";
+import {MatAnchor, MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, PostcardComponent],
+  imports: [RouterOutlet, NavbarComponent, PostcardComponent, MatButton, MatAnchor],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

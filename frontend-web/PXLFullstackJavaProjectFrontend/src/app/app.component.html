@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+<div class="main-container">
 <div class="post-container">
   @for(post of posts; track post){
     <app-postcard
@@ -7,4 +8,5 @@
       [author]="post.author">
     </app-postcard>
   }
+</div>
 </div>
