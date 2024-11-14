@@ -18,6 +18,8 @@
   <url>http://maven.apache.org</url>
   <modules>
     <module>Post-Service</module>
+    <module>Review-Service</module>
+    <module>Comment-Service</module>
   </modules>
 
   <properties>
