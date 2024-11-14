@@ -20,6 +20,8 @@
     <module>Post-Service</module>
     <module>Review-Service</module>
     <module>Comment-Service</module>
+    <module>Config-Service</module>
+    <module>Discovery-Service</module>
   </modules>
 
   <properties>
