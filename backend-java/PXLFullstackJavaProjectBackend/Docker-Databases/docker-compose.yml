@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  mongodb1:
+    image: mongo:latest
+    container_name: mongodb1
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb1-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  mongodb2:
+    image: mongo:latest
+    container_name: mongodb2
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb2-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ReviewServiceDB       # Optional: creates a default database
+      MYSQL_USER: user                 # Creates the user 'user'
+      MYSQL_PASSWORD: password
+
+volumes:
+  mongodb1-data:
+  mongodb2-data:
+  mariadb-data:
