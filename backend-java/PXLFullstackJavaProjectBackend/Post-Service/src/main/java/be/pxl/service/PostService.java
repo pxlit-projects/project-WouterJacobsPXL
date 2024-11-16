@@ -1,6 +1,7 @@
 package be.pxl.service;
 
 import be.pxl.domain.Post;
+import be.pxl.exception.InvalidPostException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class PostService {
                 errorMessage.append("- ").append(violation.getPropertyPath())
                         .append(": ").append(violation.getMessage()).append("\n");
             }
-            throw new IllegalArgumentException(errorMessage.toString());
+            throw new InvalidPostException(errorMessage.toString());
         }
     }
 }
