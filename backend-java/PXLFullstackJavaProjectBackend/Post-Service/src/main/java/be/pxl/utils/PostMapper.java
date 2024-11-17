@@ -9,6 +9,7 @@ import be.pxl.domain.Post;
 public class PostMapper {
     public static Post toEntity(PostRequestDto request, Author author) {
         return Post.builder()
+                .title(request.getTitle())
                 .content(request.getContent())
                 .previewContent(request.getPreviewContent())
                 .imageUrl(request.getImageUrl())
@@ -19,6 +20,7 @@ public class PostMapper {
     public static PostResponseDto toResponse(Post post) {
         return PostResponseDto.builder()
                 .id(post.getId())
+                .title(post.getTitle())
                 .content(post.getContent())
                 .previewContent(post.getPreviewContent())
                 .imageUrl(post.getImageUrl())

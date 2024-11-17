@@ -16,6 +16,10 @@ public class PostRequestDto {
     @Size(min = 100, max = 50000, message = "Content must be between 100 and 50,000 characters.")
     private String content;
 
+    @NotBlank(message = "Title is required.")
+    @Size(min = 10, max = 100, message = "Title must be between 10 and 100 characters.")
+    private String title;
+
     @NotBlank(message = "Preview content is required.")
     @Size(min = 50, max = 500, message = "Preview content must be between 50 and 500 characters.")
     private String previewContent;
