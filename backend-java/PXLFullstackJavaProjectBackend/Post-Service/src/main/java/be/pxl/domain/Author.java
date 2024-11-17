@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -33,4 +36,7 @@ public class Author {
             message = "Last name can only contain letters, spaces, hyphens, and apostrophes")
     @Column(name = "last_name")
     private String lastName;
+
+    @OneToMany(mappedBy = "author")
+    private List<Post> posts = new ArrayList<>();
 }
