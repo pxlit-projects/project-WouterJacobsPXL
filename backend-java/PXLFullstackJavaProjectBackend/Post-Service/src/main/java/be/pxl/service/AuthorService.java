@@ -4,6 +4,7 @@ import be.pxl.domain.Author;
 import be.pxl.domain.Post;
 import be.pxl.exception.InvalidAuthorException;
 import be.pxl.exception.InvalidPostException;
+import be.pxl.repository.AuthorRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class AuthorService {
     private final Validator validator;
+    private final AuthorRepository authorRepository;
 
+    private void addAuthor(Author author){
+        validateAuthor(author);
+
+        authorRepository.save(author);
+    }
     private void validateAuthor(Author author) {
         //TODO add logging
         Set<ConstraintViolation<Author>> violations = validator.validate(author);
