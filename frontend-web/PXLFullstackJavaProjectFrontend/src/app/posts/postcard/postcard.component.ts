@@ -1,4 +1,4 @@
-import {Component, Input, input} from '@angular/core';
+import {Component, inject, Input, input} from '@angular/core';
 import {
   MatCard, MatCardActions,
   MatCardContent,
@@ -8,6 +8,8 @@ import {
   MatCardTitle
 } from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
+import {Post} from "../../models/post.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-postcard',
@@ -26,14 +28,14 @@ import {MatButton} from "@angular/material/button";
   styleUrl: './postcard.component.css'
 })
 export class PostcardComponent {
-  @Input() title!: string;
-  @Input() contentTeaser!: string;
-  @Input() author!: string;
+  @Input() post!:Post
 
+  router:Router = inject(Router)
   hoverCard: boolean = false;
 
   cardClicked() {
     console.log('CardClicked');
-    console.log(this.author);
+    console.log(this.post.author.toString());
+    this.router.navigate(['/posts', this.post.id]);
   }
 }

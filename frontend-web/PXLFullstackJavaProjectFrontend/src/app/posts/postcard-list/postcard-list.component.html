@@ -1,1 +1,7 @@
-<p>postcard-list works!</p>
+<div class="post-container">
+  @for(post of posts; track post.id){
+    <app-postcard
+      [post]="post">
+    </app-postcard>
+  }
+</div>

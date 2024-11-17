@@ -1,1 +1,58 @@
-<p>post works!</p>
+<div class="post-container">
+  @if (loading) {
+    <mat-card class="loading-card">
+      <mat-card-content>
+        <p>Loading post...</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (error) {
+    <mat-card class="error-card">
+      <mat-card-content>
+        <p>{{ error }}</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (post) {
+    <mat-card class="post-card">
+      <mat-card-header class="post-header">
+        <mat-card-title class="post-title">{{ post.title }}</mat-card-title>
+        <mat-card-subtitle class="post-meta">
+          <div class="author-info">
+            <mat-icon>person</mat-icon>
+            <span>{{ post.author.firstName }} {{ post.author.lastName }}</span>
+          </div>
+          <mat-divider vertical></mat-divider>
+          <div class="date-info">
+            <mat-icon>calendar_today</mat-icon>
+            <span>{{ formatDate(post.date) }}</span>
+          </div>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <img mat-card-image src="https://www.justinmind.com/wp-content/webp-express/webp-images/uploads/2019/10/best-20-web-development-blogs.png.webp" [alt]="post.title" class="post-image">
+
+      <mat-card-content class="post-content">
+        <div class="content-preview">
+          <p class="preview-text">{{ post.previewContent }}</p>
+        </div>
+
+        <mat-divider class="content-divider"></mat-divider>
+
+        <div class="main-content">
+          <p [innerHTML]="post.content"></p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="post-actions">
+        <button mat-button color="primary">
+          <mat-icon>thumb_up</mat-icon> Like
+        </button>
+        <button mat-button color="primary">
+          <mat-icon>share</mat-icon> Share
+        </button>
+        <button mat-button color="primary" [routerLink]="['/posts']">
+          <mat-icon>arrow_back</mat-icon> Back to Posts
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

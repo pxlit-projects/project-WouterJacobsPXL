@@ -1,10 +1,10 @@
 <mat-card class="example-card" (click)="cardClicked()" (mouseenter)="hoverCard = true" (mouseleave)="hoverCard = false" [class.hover-effect]="hoverCard" appearance="outlined">
   <mat-card-header>
-    <mat-card-title>{{ title }}</mat-card-title>
-    <mat-card-subtitle>written by: {{ author }}</mat-card-subtitle>
+    <mat-card-title>{{ post.title }}</mat-card-title>
+    <mat-card-subtitle>written by: {{ post.author.toString() }}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg" alt="Photo of a Shiba Inu">
+  <img mat-card-image src="https://img.freepik.com/premium-vector/software-development-concept-digital-application-website-programming-engineering-coding_118813-27882.jpg" alt="Photo of a Shiba Inu">
   <mat-card-content>
-    <p>{{ contentTeaser }}</p>
+    <p>{{ post.previewContent }}</p>
   </mat-card-content>
 </mat-card>

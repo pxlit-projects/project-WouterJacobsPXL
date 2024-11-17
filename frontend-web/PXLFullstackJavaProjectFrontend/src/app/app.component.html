@@ -1,12 +1,3 @@
 <app-navbar></app-navbar>
-<div class="main-container">
-<div class="post-container">
-  @for(post of posts; track post){
-    <app-postcard
-      [title]="post.title"
-      [contentTeaser]="post.contentTeaser"
-      [author]="post.author">
-    </app-postcard>
-  }
-</div>
-</div>
+<router-outlet></router-outlet>
+
