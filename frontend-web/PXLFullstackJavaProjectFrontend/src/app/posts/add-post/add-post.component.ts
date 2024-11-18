@@ -6,7 +6,7 @@ import {Router, RouterLink} from "@angular/router";
 import {MatCard, MatCardContent, MatCardHeader, MatCardModule, MatCardTitle} from "@angular/material/card";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {CommonModule, NgIf} from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {MatButton, MatButtonModule} from "@angular/material/button";
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {MatDividerModule} from "@angular/material/divider";

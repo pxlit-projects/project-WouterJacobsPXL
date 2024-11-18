@@ -1,0 +1,47 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username">
+          @if(username.invalid && (username.dirty || !username.untouched)){
+            <mat-error>
+              @if(username.errors?.['required']){
+              }
+              <span>Username is required</span>
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password">
+          @if(password.invalid && (password.dirty || !password.untouched)){
+            <mat-error>
+              @if(password.errors?.['required']){
+                <span>Password is required</span>
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="loginForm.invalid">
+          Login
+        </button>
+        @if(loginError){
+          <mat-error class="login-error">
+            {{ loginError }}
+          </mat-error>
+        }
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
