@@ -60,4 +60,13 @@ export class PostService {
       })
     );
   }
+  createPost(postData: any): Observable<any> {
+    return from(axios.post(this.API_URL, postData)).pipe(
+      map(response => response.data),
+      catchError(error => {
+        console.error('Error creating post:', error);
+        return throwError(() => new Error('Failed to create post. Please try again later.'));
+      })
+    );
+  }
 }
