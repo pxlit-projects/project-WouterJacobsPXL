@@ -9,17 +9,21 @@
         <mat-form-field appearance="outline">
           <mat-label>Title</mat-label>
           <input matInput formControlName="title" placeholder="Enter post title">
-          <mat-error *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched">
-            {{ getErrorMessage('title') }}
-          </mat-error>
+          @if(postForm.get('title')?.invalid && postForm.get('title')?.touched){
+            <mat-error>
+              {{ getErrorMessage('title') }}
+            </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Preview Content</mat-label>
           <textarea matInput formControlName="previewContent" placeholder="Enter preview content" rows="3"></textarea>
-          <mat-error *ngIf="postForm.get('previewContent')?.invalid && postForm.get('previewContent')?.touched">
-            {{ getErrorMessage('previewContent') }}
-          </mat-error>
+          @if(postForm.get('previewContent')?.invalid && postForm.get('previewContent')?.touched){
+            <mat-error>
+              {{ getErrorMessage('previewContent') }}
+            </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
