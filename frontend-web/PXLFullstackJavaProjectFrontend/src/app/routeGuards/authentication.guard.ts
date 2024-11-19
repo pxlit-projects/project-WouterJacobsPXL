@@ -18,7 +18,7 @@ export const authenticationGuard: CanActivateFn = (route, state) => {
     return false;
   }
 
-    if (userRole != "Author") {
+    if (userRole != "author") {
       snackBar.open(`Only authors can access this page`, 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
