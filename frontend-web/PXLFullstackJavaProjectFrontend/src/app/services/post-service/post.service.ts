@@ -8,7 +8,7 @@ import axios from "axios";
   providedIn: 'root'
 })
 export class PostService {
-  private readonly API_URL = 'http://localhost:8081/api/posts';
+  private readonly API_URL = 'http://localhost:8085/post/api/posts';
 
   constructor() { }
 
