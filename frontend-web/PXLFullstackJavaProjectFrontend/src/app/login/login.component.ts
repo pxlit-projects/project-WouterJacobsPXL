@@ -44,6 +44,8 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
     localStorage.clear();
+    this.loginService.isAuthor.set(false)
+    this.loginService.isUser.set(true)
   }
 
   get username() {

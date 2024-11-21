@@ -77,7 +77,6 @@ export class AddPostComponent implements OnInit {
       this.isSubmitting = true;
       const postData = this.postForm.value;
 
-      // Convert authorId to number
       postData.authorId = Number(postData.authorId);
 
       this.postService.createPost(postData).subscribe({

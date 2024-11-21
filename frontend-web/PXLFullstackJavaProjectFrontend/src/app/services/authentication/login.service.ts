@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, signal} from "@angular/core";
 
 interface Credentials {
   username: string;
@@ -14,6 +14,8 @@ export class LoginService {
     { username: 'Author', password: 'passwordAuthor', role: 'author' },
     { username: 'User', password: 'passwordUser', role: 'user' }
   ];
+  isAuthor = signal(false)
+  isUser = signal(false)
 
   login(username: string, password: string): boolean {
     const user = this.validCredentials.find(
@@ -22,11 +24,14 @@ export class LoginService {
 
     if (user) {
       localStorage.setItem('userRole', user.role);
-
+      if (user.role === 'user') {
+        this.isUser.set(true)
+      }
       if (user.role === 'author') {
         const randomNumber = Math.floor(Math.random() * 3) + 1;
         localStorage.setItem('authorId', randomNumber.toString());
-    }
+        this.isAuthor.set(true)
+      }
       return true;
     }
       else {

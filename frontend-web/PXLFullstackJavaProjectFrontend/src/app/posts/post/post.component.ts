@@ -36,7 +36,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      const id = +params['id']; // Convert string id to number
+      const id = +params['id'];
       this.getPost(id);
     });
   }

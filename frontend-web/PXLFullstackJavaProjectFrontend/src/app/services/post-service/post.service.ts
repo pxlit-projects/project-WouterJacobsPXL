@@ -32,9 +32,10 @@ export class PostService {
           );
         });
       })
+      //TODO add error handling
     );
   }
-  // post.service.ts
+
   getPostById(id: number): Observable<Post> {
     return from(axios.get(`${this.API_URL}/${id}`)).pipe(
       map(response => {
@@ -60,6 +61,7 @@ export class PostService {
       })
     );
   }
+
   createPost(postData: any): Observable<any> {
     return from(axios.post(this.API_URL, postData)).pipe(
       map(response => response.data),
