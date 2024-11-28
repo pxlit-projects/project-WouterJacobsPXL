@@ -78,6 +78,7 @@ export class AddPostComponent implements OnInit {
       const postData = this.postForm.value;
 
       postData.authorId = Number(postData.authorId);
+      postData.isConcept = false;
 
       this.postService.createPost(postData).subscribe({
         next: () => {

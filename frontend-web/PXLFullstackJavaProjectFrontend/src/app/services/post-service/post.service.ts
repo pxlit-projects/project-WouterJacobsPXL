@@ -25,6 +25,7 @@ export class PostService {
           return new Post(
             postData.id,
             postData.title,
+            postData.isConcept,
             postData.content,
             postData.previewContent,
             postData.imageUrl,
@@ -48,6 +49,7 @@ export class PostService {
 
         return new Post(
           postData.id,
+          postData.isConcept,
           postData.title,
           postData.content,
           postData.previewContent,

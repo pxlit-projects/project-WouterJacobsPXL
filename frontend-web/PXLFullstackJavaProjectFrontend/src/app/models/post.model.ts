@@ -3,6 +3,7 @@ import {Author} from "./author";
 export class Post {
   private _id:number;
   private _title:string;
+  private _isConcept:boolean;
   private _content:string;
   private _previewContent:string;
   private _imageUrl:string;
@@ -10,9 +11,10 @@ export class Post {
   private _date:string;
 
 
-  constructor(id: number, title: string, content: string, previewContent: string, imageUrl: string, author: Author) {
+  constructor(id: number, title: string, isConcept:boolean,content: string, previewContent: string, imageUrl: string, author: Author) {
     this._id = id;
     this._title = title;
+    this._isConcept = isConcept;
     this._content = content;
     this._previewContent = previewContent;
     this._imageUrl = imageUrl;
@@ -35,6 +37,14 @@ export class Post {
 
   set title(value: string) {
     this._title = value;
+  }
+
+  get isConcept(): boolean {
+    return this._isConcept;
+  }
+
+  set isConcept(value: boolean) {
+    this._isConcept = value;
   }
 
   get content(): string {
