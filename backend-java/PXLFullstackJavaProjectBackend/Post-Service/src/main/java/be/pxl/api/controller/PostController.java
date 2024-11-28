@@ -34,4 +34,9 @@ public class PostController {
     public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
+
+    @GetMapping(value = "/concepts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PostResponseDto>> getAllConcepts() {
+        return ResponseEntity.ok(postService.getConcepts());
+    }
 }

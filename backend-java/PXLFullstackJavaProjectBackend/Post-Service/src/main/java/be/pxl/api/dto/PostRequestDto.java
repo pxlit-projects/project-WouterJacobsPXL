@@ -20,6 +20,8 @@ public class PostRequestDto {
     @Size(min = 10, max = 100, message = "Title must be between 10 and 100 characters.")
     private String title;
 
+    private Boolean isConcept;
+
     @NotBlank(message = "Preview content is required.")
     @Size(min = 50, max = 500, message = "Preview content must be between 50 and 500 characters.")
     private String previewContent;

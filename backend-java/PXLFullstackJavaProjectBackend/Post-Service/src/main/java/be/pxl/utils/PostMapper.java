@@ -10,6 +10,7 @@ public class PostMapper {
     public static Post toEntity(PostRequestDto request, Author author) {
         return Post.builder()
                 .title(request.getTitle())
+                .isConcept(request.getIsConcept() != null ? request.getIsConcept() : false) // Default to false
                 .content(request.getContent())
                 .previewContent(request.getPreviewContent())
                 .imageUrl(request.getImageUrl())

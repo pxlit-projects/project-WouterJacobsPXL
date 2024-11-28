@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class PostResponseDto {
     private Long id;
     private String title;
+    private Boolean isConcept;
     private String content;
     private String previewContent;
     private String imageUrl;
