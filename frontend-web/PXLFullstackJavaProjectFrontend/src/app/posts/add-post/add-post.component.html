@@ -3,9 +3,20 @@
     <mat-card-header>
       <mat-card-title>Create New Blog Post</mat-card-title>
     </mat-card-header>
-
     <mat-card-content>
       <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="post-form">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Draft Concepts</mat-label>
+          <mat-select (selectionChange)="onConceptSelected($event.value)">
+            @for (concept of concepts; track concept.id) {
+              <mat-option [value]="concept">
+                {{ concept.title }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
         <mat-form-field appearance="outline">
           <mat-label>Title</mat-label>
           <input matInput formControlName="title" placeholder="Enter post title">

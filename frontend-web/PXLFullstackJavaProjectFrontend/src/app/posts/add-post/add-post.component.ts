@@ -11,6 +11,9 @@ import {MatButton, MatButtonModule} from "@angular/material/button";
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatOption, MatSelect} from "@angular/material/select";
+import {Post} from "../../models/post.model";
+
 
 @Component({
   selector: 'app-add-post',
@@ -27,7 +30,9 @@ import {MatChipsModule} from "@angular/material/chips";
     RouterLink,
     ReactiveFormsModule,
     MatFormField,
-    MatInput
+    MatInput,
+    MatSelect,
+    MatOption
   ],
   templateUrl: './add-post.component.html',
   styleUrl: './add-post.component.css'
@@ -35,6 +40,7 @@ import {MatChipsModule} from "@angular/material/chips";
 export class AddPostComponent implements OnInit {
   postForm: FormGroup;
   isSubmitting = false;
+  concepts!: Post[];
 
   constructor(
     private fb: FormBuilder,
@@ -70,7 +76,32 @@ export class AddPostComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fetchConcepts()
+  }
+
+  fetchConcepts(): void {
+    this.postService.getConceptsByAuthorId(2).subscribe({
+      next: (concepts) => {
+        this.concepts = concepts;
+        console.log(this.concepts);
+      },
+      error: (error) => {
+        console.error('Error fetching concepts:', error);
+      }
+    });
+  }
+
+  onConceptSelected(concept: Post): void {
+    this.postForm.patchValue({
+      title: concept.title,
+      content: concept.content,
+      previewContent: concept.previewContent,
+      imageUrl: concept.imageUrl,
+      // Optionally set the author ID if needed
+      authorId: concept.author.id
+    });
+  }
 
   onSubmit(): void {
     if (this.postForm.valid) {

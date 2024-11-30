@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {catchError, from, map, Observable, throwError} from "rxjs";
+import {catchError, filter, from, map, Observable, of, throwError} from "rxjs";
 import {Post} from "../../models/post.model";
 import {Author} from "../../models/author";
 import axios from "axios";
@@ -70,6 +70,37 @@ export class PostService {
       catchError(error => {
         console.error('Error creating post:', error);
         return throwError(() => new Error('Failed to create post. Please try again later.'));
+      })
+    );
+  }
+
+  getConceptsByAuthorId(authorId: number): Observable<Post[]> {
+    console.log("getting concepts");
+    return from(axios.get(this.API_URL + "/concepts")).pipe(
+      map(response => {
+        console.log(response);
+        return response.data.filter((postData: any) => postData.author.id === authorId)
+          .map((postData: any) => {
+            const author = new Author(
+              postData.author.id,
+              postData.author.firstName,
+              postData.author.lastName
+            );
+
+            return new Post(
+              postData.id,
+              postData.title,
+              postData.isConcept,
+              postData.content,
+              postData.previewContent,
+              postData.imageUrl,
+              author
+            );
+          });
+      }),
+      catchError(error => {
+        console.error('Error fetching concepts:', error);
+        return of([]); // Return an empty array or appropriate fallback
       })
     );
   }
