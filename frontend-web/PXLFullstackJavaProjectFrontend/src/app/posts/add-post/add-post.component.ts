@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal, Signal, WritableSignal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {PostService} from "../../services/post-service/post.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -41,6 +41,8 @@ export class AddPostComponent implements OnInit {
   postForm: FormGroup;
   isSubmitting = false;
   concepts!: Post[];
+  selectedConceptid: WritableSignal<Number> = signal(-1)
+  selectedConceptTitle: WritableSignal<String | null> = signal(null)
 
   constructor(
     private fb: FormBuilder,
@@ -101,15 +103,22 @@ export class AddPostComponent implements OnInit {
       // Optionally set the author ID if needed
       authorId: concept.author.id
     });
+    this.selectedConceptid.set(concept.id);
+    this.selectedConceptTitle.set(concept.title);
   }
 
   onSubmit(): void {
+    //TODO add a save as concept func.
     if (this.postForm.valid) {
       this.isSubmitting = true;
       const postData = this.postForm.value;
 
       postData.authorId = Number(postData.authorId);
       postData.isConcept = false;
+
+      if (this.selectedConceptTitle()?.valueOf() ===  postData.title) {
+        postData.id = this.selectedConceptid().valueOf();
+      }
 
       this.postService.createPost(postData).subscribe({
         next: () => {

@@ -44,10 +44,11 @@ public class PostService {
                 existingPost.setContent(post.getContent());
                 existingPost.setPreviewContent(post.getPreviewContent());
                 existingPost.setImageUrl(post.getImageUrl());
-
+                existingPost.setIsConcept(false);
                 postRepository.save(existingPost);
+            }else{
+                throw new InvalidPostException("Cannot modify a published post");
             }
-            throw new InvalidPostException("Cannot modify a published post");
         }
         // just add the post
         postRepository.save(post);

@@ -1,5 +1,6 @@
 package be.pxl.api.dto;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,8 @@ import org.hibernate.validator.constraints.URL;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRequestDto {
+    private Long id;
+
     @NotBlank(message = "Content is required.")
     @Size(min = 100, max = 50000, message = "Content must be between 100 and 50,000 characters.")
     private String content;

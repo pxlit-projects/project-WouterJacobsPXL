@@ -9,6 +9,7 @@ import be.pxl.domain.Post;
 public class PostMapper {
     public static Post toEntity(PostRequestDto request, Author author) {
         return Post.builder()
+                .id(request.getId())
                 .title(request.getTitle())
                 .isConcept(request.getIsConcept() != null ? request.getIsConcept() : false) // Default to false
                 .content(request.getContent())
