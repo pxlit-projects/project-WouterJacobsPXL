@@ -54,6 +54,39 @@ public class PostService {
         postRepository.save(post);
     }
 
+    @Transactional
+    public void addConcept(PostRequestDto postRequestDto) {
+        Author author = findAuthorById(postRequestDto.getAuthorId());
+        Post concept = PostMapper.toEntity(postRequestDto, author);
+
+        validatePost(concept);
+
+        if (concept.getId() != null) {
+            Post existingPost = postRepository.findById(concept.getId())
+                    .orElseThrow(() -> new PostNotFoundException("Post not found"));
+
+            // If it's a concept, update the concept
+            if (existingPost.getIsConcept()) {
+                existingPost.setTitle(concept.getTitle());
+                existingPost.setContent(concept.getContent());
+                existingPost.setPreviewContent(concept.getPreviewContent());
+                existingPost.setImageUrl(concept.getImageUrl());
+                postRepository.save(existingPost);
+            }
+        }else{
+            postRepository.save(concept);
+        }
+    }
+
+    @Transactional
+    public void deleteConcept(Long id) {
+        if (postRepository.existsById(id)){
+            postRepository.deleteById(id);
+        }else{
+            throw new PostNotFoundException("Cannot delete non-existent post with id: %s".formatted(id));
+        }
+    }
+
     public List<PostResponseDto> getPosts() {
         return postRepository.findAll().stream()
                 .filter(post -> Boolean.FALSE.equals(post.getIsConcept()))

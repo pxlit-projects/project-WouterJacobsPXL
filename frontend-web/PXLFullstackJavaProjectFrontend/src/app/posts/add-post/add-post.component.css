@@ -53,3 +53,33 @@ mat-form-field {
     }
   }
 }
+.select-concept-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.delete-concept-button {
+  color: #f44336;
+  margin-right: 0.5rem;
+}
+
+.delete-concept-button:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+mat-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  mat-icon {
+    color: #00796b;
+  }
+
+  &:hover {
+    background-color: rgba(0, 150, 136, 0.1);
+  }
+}
+
+

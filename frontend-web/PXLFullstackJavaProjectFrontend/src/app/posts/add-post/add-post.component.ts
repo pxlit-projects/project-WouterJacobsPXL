@@ -83,7 +83,8 @@ export class AddPostComponent implements OnInit {
   }
 
   fetchConcepts(): void {
-    this.postService.getConceptsByAuthorId(2).subscribe({
+    //TODO make reactionary
+    this.postService.getConceptsByAuthorId(1).subscribe({
       next: (concepts) => {
         this.concepts = concepts;
         console.log(this.concepts);
@@ -107,8 +108,70 @@ export class AddPostComponent implements OnInit {
     this.selectedConceptTitle.set(concept.title);
   }
 
+  onSaveAsConceptClick() {
+    console.log("in on on save concept");
+
+    if (this.postForm.valid) {
+      this.isSubmitting = true;
+      const postData = this.postForm.value;
+
+      postData.authorId = Number(postData.authorId);
+      postData.isConcept = true;
+
+      console.log(postData.title + " aa " + this.selectedConceptTitle()?.valueOf());
+      console.log(postData.title === this.selectedConceptTitle()?.valueOf());
+      if (this.selectedConceptTitle()?.valueOf() === postData.title) {
+        postData.id = this.selectedConceptid()?.valueOf();
+      } else {
+        postData.id = null;
+      }
+
+      this.postService.createConcept(postData).subscribe({
+        next: () => {
+          this.snackBar.open('Concept created successfully!', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+          });
+          location.reload();
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          this.snackBar.open(error.message || 'Failed to create Concept', 'Close', {
+            duration: 5000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+          });
+        }
+      });
+    } else {
+      this.markFormGroupTouched(this.postForm);
+    }
+  }
+  onDeleteConceptButtonClick(id:number): void {
+    this.postService.deleteConcept(id).subscribe({
+      next: () => {
+        this.snackBar.open('Concept delete successfully!', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+        location.reload();
+        },
+      error: (error) => {
+        this.isSubmitting = false;
+        this.snackBar.open(error.message || 'Failed to delete concept', 'Close', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
+  }
+
   onSubmit(): void {
     //TODO add a save as concept func.
+    console.log("in on submit");
     if (this.postForm.valid) {
       this.isSubmitting = true;
       const postData = this.postForm.value;
@@ -175,5 +238,7 @@ export class AddPostComponent implements OnInit {
     }
     return '';
   }
+
+
 }
 

@@ -73,6 +73,24 @@ export class PostService {
       })
     );
   }
+  createConcept(postData: any): Observable<any> {
+    return from(axios.post(this.API_URL + "/concepts", postData)).pipe(
+      map(response => response.data),
+      catchError(error => {
+        console.error('Error creating concept:', error);
+        return throwError(() => new Error('Failed to create concept. Please try again later.'));
+      })
+    );
+  }
+
+  deleteConcept(id: number): Observable<any> {
+    return from(axios.delete(this.API_URL + `/concepts/${id}`)).pipe(
+      catchError(error => {
+        console.error('Error deleting concept:', error);
+        return throwError(() => new Error('Failed to delete concept. Please try again later.'));
+      })
+    );
+  }
 
   getConceptsByAuthorId(authorId: number): Observable<Post[]> {
     console.log("getting concepts");
