@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
@@ -8,6 +8,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {PostService} from "../../services/post-service/post.service";
 import {Post} from "../../models/post.model";
+import {LoginService} from "../../services/authentication/login.service";
 
 @Component({
   selector: 'app-post',
@@ -28,6 +29,7 @@ export class PostComponent implements OnInit {
   post?: Post;
   loading: boolean = true;
   error: string = '';
+  loginService: LoginService = inject(LoginService);
 
   constructor(
     private route: ActivatedRoute,

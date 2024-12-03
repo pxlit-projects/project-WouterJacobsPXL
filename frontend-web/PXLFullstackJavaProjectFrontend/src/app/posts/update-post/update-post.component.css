@@ -1,0 +1,103 @@
+.update-post-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background-color: #ffffff;
+}
+
+.update-post-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.update-post-card .mat-mdc-card-header {
+  background-color: #f0f4f8;
+  padding: 1rem;
+  border-bottom: 1px solid #e1e8f0;
+}
+
+.update-post-card .mat-mdc-card-title {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.update-post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.update-post-form .mat-mdc-form-field {
+  width: 100%;
+}
+
+.update-post-form .mat-mdc-form-field-appearance-outline .mat-mdc-form-field-outline {
+  color: #a0aec0;
+}
+
+.update-post-form .mat-mdc-form-field-label {
+  color: #4a5568;
+}
+
+.update-post-form .mat-mdc-input-element {
+  color: #2d3748;
+}
+
+.update-post-form .mat-mdc-form-field-hint-wrapper,
+.update-post-form .mat-mdc-form-field-error-wrapper {
+  color: #e53e3e;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.form-actions button {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-actions .mat-mdc-raised-button {
+  background-color: #3182ce;
+  color: white;
+}
+
+.form-actions .mat-mdc-raised-button:disabled {
+  background-color: #cbd5e0;
+  color: #718096;
+}
+
+.update-post-container .loading-card,
+.update-post-container .error-card {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f7fafc;
+}
+
+.update-post-container .loading-card p,
+.update-post-container .error-card p {
+  color: #4a5568;
+}
+
+.update-post-container .error-card {
+  background-color: #fff5f5;
+  color: #e53e3e;
+}
+
+/* Checkbox Styling */
+.mat-mdc-checkbox {
+  margin-bottom: 1rem;
+}
+
+.mat-mdc-checkbox .mdc-checkbox__background {
+  border-color: #3182ce;
+}
+
+.mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background-color: #3182ce;
+}

@@ -13,6 +13,7 @@ import be.pxl.repository.PostRepository;
 import be.pxl.utils.PostMapper;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Validator;
+import jakarta.ws.rs.POST;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -111,6 +112,18 @@ public class PostService {
                 .map(PostMapper::toResponse)
                 .orElseThrow(() -> new ConceptNotFoundException("Concept with id: %d not found".formatted(id)));
     }
+
+    public void updatePost(PostRequestDto postRequestDto){
+        Author author = findAuthorById(postRequestDto.getAuthorId());
+        Post post = PostMapper.toEntity(postRequestDto, author);
+
+        validatePost(post);
+
+        if (post.getId() != null){
+            postRepository.save(post);
+        }
+    }
+
 
     private Author findAuthorById(long id) {
         return authorRepository.findById(id)

@@ -53,4 +53,10 @@ public class PostController {
         postService.deleteConcept(id);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updatePost(@Valid @RequestBody PostRequestDto postRequestDto) {
+        postService.updatePost(postRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }

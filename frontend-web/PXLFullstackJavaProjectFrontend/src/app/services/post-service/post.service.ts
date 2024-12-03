@@ -46,16 +46,16 @@ export class PostService {
           postData.author.firstName,
           postData.author.lastName
         );
-
         return new Post(
           postData.id,
-          postData.isConcept,
           postData.title,
+          postData.isConcept,
           postData.content,
           postData.previewContent,
           postData.imageUrl,
           author
         );
+
       }),
       catchError(error => {
         console.error('Error fetching post:', error);
@@ -118,7 +118,17 @@ export class PostService {
       }),
       catchError(error => {
         console.error('Error fetching concepts:', error);
-        return of([]); // Return an empty array or appropriate fallback
+        return of([]);
+      })
+    );
+  }
+
+  updatePost(postData: any): Observable<any> {
+    return from(axios.put(`${this.API_URL}`, postData)).pipe(
+      map(response => response.data),
+      catchError(error => {
+        console.error('Error updating post:', error);
+        return throwError(() => new Error('Failed to update post. Please try again later.'));
       })
     );
   }

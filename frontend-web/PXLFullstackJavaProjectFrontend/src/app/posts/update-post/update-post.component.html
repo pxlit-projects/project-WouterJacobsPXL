@@ -1,0 +1,72 @@
+<div class="update-post-container">
+  @if (loading) {
+    <mat-card class="loading-card">
+      <mat-card-content>
+        <p>Loading post details...</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (error) {
+    <mat-card class="error-card">
+      <mat-card-content>
+        <p>{{ error }}</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <mat-card class="update-post-card">
+      <mat-card-header>
+        <mat-card-title>Edit Post</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="update-post-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" required>
+            @if (postForm.get('title')?.invalid && (postForm.get('title')?.dirty || postForm.get('title')?.touched)) {
+              <mat-error>
+                @if (postForm.get('title')?.errors?.['required']) {
+                  Title is required
+                } @else if (postForm.get('title')?.errors?.['minlength']) {
+                  Title must be at least 3 characters
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Preview Content</mat-label>
+            <textarea matInput formControlName="previewContent" rows="3" required></textarea>
+            @if (postForm.get('previewContent')?.invalid && (postForm.get('previewContent')?.dirty || postForm.get('previewContent')?.touched)) {
+              <mat-error>
+                @if (postForm.get('previewContent')?.errors?.['required']) {
+                  Preview content is required
+                } @else if (postForm.get('previewContent')?.errors?.['maxlength']) {
+                  Preview content cannot exceed 300 characters
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Full Content</mat-label>
+            <textarea matInput formControlName="content" rows="10" required></textarea>
+            @if (postForm.get('content')?.invalid && (postForm.get('content')?.dirty || postForm.get('content')?.touched)) {
+              <mat-error>
+                Content is required
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="postForm.invalid">
+              Update Post
+            </button>
+            <button mat-button type="button" (click)="cancelUpdate()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

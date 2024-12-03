@@ -118,8 +118,7 @@ export class AddPostComponent implements OnInit {
       postData.authorId = Number(postData.authorId);
       postData.isConcept = true;
 
-      console.log(postData.title + " aa " + this.selectedConceptTitle()?.valueOf());
-      console.log(postData.title === this.selectedConceptTitle()?.valueOf());
+
       if (this.selectedConceptTitle()?.valueOf() === postData.title) {
         postData.id = this.selectedConceptid()?.valueOf();
       } else {
