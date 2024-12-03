@@ -1,5 +1,60 @@
-<div class="post-container">
-  @for(post of posts; track post.id){
+<mat-card class="filter-container">
+  <mat-card-content>
+    <div class="filter-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Filter by Author</mat-label>
+        <input
+          matInput
+          [(ngModel)]="authorFilter"
+          (ngModelChange)="applyFilters()"
+          placeholder="Search author"
+        >
+        <mat-icon matSuffix>person_search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Filter by Category</mat-label>
+        <input
+          matInput
+          [(ngModel)]="categoryFilter"
+          (ngModelChange)="applyFilters()"
+          placeholder="Search category"
+        >
+        <mat-icon matSuffix>category</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Filter by Content</mat-label>
+        <input
+          matInput
+          [(ngModel)]="contentFilter"
+          (ngModelChange)="applyFilters()"
+          placeholder="Search content"
+        >
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="resetFilters()"
+        class="reset-button"
+      >
+        <mat-icon>refresh</mat-icon>
+        Reset Filters
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div class="posts-grid">
+  @if(filteredPosts.length === 0){
+    <div class="no-results">
+      <mat-icon>info</mat-icon>
+      <p>No posts match your search criteria</p>
+    </div>
+  }
+  @for(post of filteredPosts; track post.id){
     <app-postcard
       [post]="post">
     </app-postcard>
