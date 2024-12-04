@@ -10,6 +10,7 @@ import {
 import {MatButton} from "@angular/material/button";
 import {Post} from "../../models/post.model";
 import {Router} from "@angular/router";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-postcard',
@@ -22,7 +23,8 @@ import {Router} from "@angular/router";
     MatCardTitle,
     MatCardImage,
     MatButton,
-    MatCardActions
+    MatCardActions,
+    MatIcon
   ],
   templateUrl: './postcard.component.html',
   styleUrl: './postcard.component.css'

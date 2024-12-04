@@ -29,6 +29,7 @@ export class PostService {
             postData.content,
             postData.previewContent,
             postData.imageUrl,
+            postData.category,
             author
           );
         });
@@ -53,6 +54,7 @@ export class PostService {
           postData.content,
           postData.previewContent,
           postData.imageUrl,
+          postData.category,
           author
         );
 
@@ -112,6 +114,7 @@ export class PostService {
               postData.content,
               postData.previewContent,
               postData.imageUrl,
+              postData.category,
               author
             );
           });

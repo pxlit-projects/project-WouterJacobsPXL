@@ -52,11 +52,9 @@ export class PostcardListComponent implements OnInit{
 
   applyFilters() {
     this.filteredPosts = this.posts.filter(post => {
-      // Convert filters to lowercase for case-insensitive comparison
       const authorMatch = this.authorFilter.toLowerCase() === '' ||
         `${post.author.firstName} ${post.author.lastName}`.toLowerCase().includes(this.authorFilter.toLowerCase());
 
-      // Placeholder for category filter - you'll need to add a category property to Post model
       const categoryMatch = this.categoryFilter.toLowerCase() === '' ||
         (post as any).category?.toLowerCase().includes(this.categoryFilter.toLowerCase());
 

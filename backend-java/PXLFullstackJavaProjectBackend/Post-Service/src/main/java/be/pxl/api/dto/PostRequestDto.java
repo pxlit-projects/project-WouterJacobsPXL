@@ -1,6 +1,5 @@
 package be.pxl.api.dto;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +33,9 @@ public class PostRequestDto {
     @Pattern(regexp = ".*\\.(jpg|jpeg|png|gif|webp)$",
             message = "Image URL must end with a valid image extension (jpg, jpeg, png, gif, or webp)")
     private String imageUrl;
+
+    @NotBlank(message = "Category is required.")
+    private String category;
 
     @NotNull(message = "Author ID is required.")
     @Positive(message = "Author ID must be a positive number.")

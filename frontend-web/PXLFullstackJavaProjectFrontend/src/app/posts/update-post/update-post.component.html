@@ -57,6 +57,16 @@
             }
           </mat-form-field>
 
+          <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <input matInput formControlName="category" required>
+            @if(postForm.get('category')?.invalid && postForm.get('category')?.touched){
+              <mat-error>
+                Category is required
+              </mat-error>
+            }
+          </mat-form-field>
+
           <div class="form-actions">
             <button mat-raised-button color="primary" type="submit" [disabled]="postForm.invalid">
               Update Post

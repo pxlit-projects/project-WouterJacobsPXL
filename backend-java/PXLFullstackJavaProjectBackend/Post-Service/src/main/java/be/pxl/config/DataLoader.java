@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,6 +43,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void addMockPosts(List<Author> authors) {
+        List<String> categories = Arrays.asList("Tech", "Lifestyle", "News", "History");
         if (postRepository.findAll().isEmpty()) {
             authors.forEach(author -> {
                 // Generate random counts for published and concept posts
@@ -60,6 +63,7 @@ public class DataLoader implements CommandLineRunner {
                             .previewContent("Preview content of the published post " + i + " lorem ipsum lorem ipsum lorem ipsum.")
                             .imageUrl("https://example.com/images/post" + i + ".jpg")
                             .isConcept(false)
+                            .category(categories.get(i))
                             .author(author)
                             .build();
                     postRepository.save(post);
@@ -75,6 +79,7 @@ public class DataLoader implements CommandLineRunner {
                             .previewContent("Preview of concept post " + i + " lorem ipsum lorem ipsum lorem ipsum." )
                             .imageUrl("https://example.com/images/concept" + i + ".jpg")
                             .isConcept(true)
+                            .category(categories.get(i))
                             .author(author)
                             .build();
                     postRepository.save(concept);

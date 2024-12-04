@@ -71,6 +71,9 @@ export class AddPostComponent implements OnInit {
         Validators.pattern('https://.*'),
         Validators.pattern('.*\\.(jpg|jpeg|png|gif|webp)$')
       ]],
+      category: ['', [
+        Validators.required,
+      ]],
       authorId: ['', [
         Validators.required,
         Validators.min(1)

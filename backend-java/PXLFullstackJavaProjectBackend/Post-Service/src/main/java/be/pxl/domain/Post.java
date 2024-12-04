@@ -42,6 +42,9 @@ public class Post {
             message = "Image URL must end with a valid image extension (jpg, jpeg, png, gif, or webp)")
     private String imageUrl;
 
+    @NotBlank(message = "Category is required.")
+    private String category;
+
     @NotNull(message = "Author is required.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")

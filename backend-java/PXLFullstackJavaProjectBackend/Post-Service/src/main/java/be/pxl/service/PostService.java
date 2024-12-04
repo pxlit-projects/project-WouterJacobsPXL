@@ -30,29 +30,30 @@ public class PostService {
     @Transactional
     public void addPost(PostRequestDto postRequestDto) {
         Author author = findAuthorById(postRequestDto.getAuthorId());
-        Post post = PostMapper.toEntity(postRequestDto, author);
+        Post newPost = PostMapper.toEntity(postRequestDto, author);
 
-        validatePost(post);
+        validatePost(newPost);
 
         // If the post had concept, publish it
-        if (post.getId() != null) {
-            Post existingPost = postRepository.findById(post.getId())
+        if (newPost.getId() != null) {
+            Post existingPost = postRepository.findById(newPost.getId())
                     .orElseThrow(() -> new PostNotFoundException("Post not found"));
 
             // If it's a concept, update the concept
             if (existingPost.getIsConcept()) {
-                existingPost.setTitle(post.getTitle());
-                existingPost.setContent(post.getContent());
-                existingPost.setPreviewContent(post.getPreviewContent());
-                existingPost.setImageUrl(post.getImageUrl());
+                existingPost.setTitle(newPost.getTitle());
+                existingPost.setContent(newPost.getContent());
+                existingPost.setPreviewContent(newPost.getPreviewContent());
+                existingPost.setImageUrl(newPost.getImageUrl());
                 existingPost.setIsConcept(false);
+                existingPost.setCategory(newPost.getCategory());
                 postRepository.save(existingPost);
             }else{
                 throw new InvalidPostException("Cannot modify a published post");
             }
         }
         // just add the post
-        postRepository.save(post);
+        postRepository.save(newPost);
     }
 
     @Transactional
@@ -72,6 +73,7 @@ public class PostService {
                 existingPost.setContent(concept.getContent());
                 existingPost.setPreviewContent(concept.getPreviewContent());
                 existingPost.setImageUrl(concept.getImageUrl());
+                existingPost.setCategory(concept.getCategory());
                 postRepository.save(existingPost);
             }
         }else{

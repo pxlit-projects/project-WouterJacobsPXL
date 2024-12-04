@@ -15,6 +15,7 @@ public class PostMapper {
                 .content(request.getContent())
                 .previewContent(request.getPreviewContent())
                 .imageUrl(request.getImageUrl())
+                .category(request.getCategory())
                 .author(author)
                 .build();
     }
@@ -26,6 +27,7 @@ public class PostMapper {
                 .content(post.getContent())
                 .previewContent(post.getPreviewContent())
                 .imageUrl(post.getImageUrl())
+                .category(post.getCategory())
                 .author(toAuthorSummary(post.getAuthor()))
                 .build();
     }

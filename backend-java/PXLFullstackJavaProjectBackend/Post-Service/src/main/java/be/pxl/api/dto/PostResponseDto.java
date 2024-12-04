@@ -16,5 +16,6 @@ public class PostResponseDto {
     private String content;
     private String previewContent;
     private String imageUrl;
+    private String category;
     private AuthorDto author;
 }

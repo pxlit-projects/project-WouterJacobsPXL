@@ -45,6 +45,7 @@ export class UpdatePostComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3)]],
       previewContent: ['', [Validators.required, Validators.maxLength(300)]],
       content: ['', [Validators.required]],
+      category: ['', [Validators.required]],
     });
   }
 
@@ -83,7 +84,8 @@ export class UpdatePostComponent implements OnInit {
       title: post.title,
       previewContent: post.previewContent,
       content: post.content,
-      isConcept: post.isConcept
+      isConcept: post.isConcept,
+      category: post.category
     });
   }
 

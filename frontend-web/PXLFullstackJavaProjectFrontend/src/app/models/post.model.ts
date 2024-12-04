@@ -1,23 +1,32 @@
 import {Author} from "./author";
 
 export class Post {
+  get category(): string {
+    return this._category;
+  }
+
+  set category(value: string) {
+    this._category = value;
+  }
   private _id:number;
   private _title:string;
   private _isConcept:boolean;
   private _content:string;
   private _previewContent:string;
   private _imageUrl:string;
+  private _category:string;
   private _author:Author;
   private _date:string;
 
 
-  constructor(id: number, title: string, isConcept:boolean,content: string, previewContent: string, imageUrl: string, author: Author) {
+  constructor(id: number, title: string, isConcept:boolean,content: string, previewContent: string, imageUrl: string, category:string, author: Author) {
     this._id = id;
     this._title = title;
     this._isConcept = isConcept;
     this._content = content;
     this._previewContent = previewContent;
     this._imageUrl = imageUrl;
+    this._category = category;
     this._author = author;
     this._date = new Date("2023, 4, 7").toString()
   }

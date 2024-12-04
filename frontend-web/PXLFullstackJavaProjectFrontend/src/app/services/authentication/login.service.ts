@@ -11,8 +11,8 @@ interface Credentials {
 })
 export class LoginService {
   private validCredentials: Credentials[] = [
-    { username: 'Author', password: 'passwordAuthor', role: 'author' },
-    { username: 'User', password: 'passwordUser', role: 'user' }
+    { username: 'Author', password: 'password', role: 'author' },
+    { username: 'User', password: 'password', role: 'user' }
   ];
   isAuthor = signal(false)
   isUser = signal(false)
