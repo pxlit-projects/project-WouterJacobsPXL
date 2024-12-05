@@ -6,22 +6,24 @@
     <mat-card-content>
       <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="post-form">
 
-        <mat-form-field appearance="outline">
-          <mat-label>Draft Concepts</mat-label>
-          <mat-select (selectionChange)="onConceptSelected($event.value)">
-            @for (concept of concepts; track concept.id) {
-              <div class="select-concept-container">
-                <mat-option [value]="concept">
-                  {{ concept.title }}
-                </mat-option>
-                <button mat-icon-button type="button" class="delete-concept-button"
-                        (click)="onDeleteConceptButtonClick(concept.id)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-            }
-          </mat-select>
-        </mat-form-field>
+        @if (concepts.length >= 1){
+          <mat-form-field appearance="outline">
+            <mat-label>Draft Concepts</mat-label>
+            <mat-select (selectionChange)="onConceptSelected($event.value)">
+              @for (concept of concepts; track concept.id) {
+                <div class="select-concept-container">
+                  <mat-option [value]="concept">
+                    {{ concept.title }}
+                  </mat-option>
+                  <button mat-icon-button type="button" class="delete-concept-button"
+                          (click)="onDeleteConceptButtonClick(concept.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
 
         <mat-form-field appearance="outline">
           <mat-label>Title</mat-label>

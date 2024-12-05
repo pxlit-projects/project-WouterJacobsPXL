@@ -40,7 +40,7 @@ import {Post} from "../../models/post.model";
 export class AddPostComponent implements OnInit {
   postForm: FormGroup;
   isSubmitting = false;
-  concepts!: Post[];
+  concepts: Post[] = [];
   selectedConceptid: WritableSignal<Number> = signal(-1)
   selectedConceptTitle: WritableSignal<String | null> = signal(null)
 
@@ -86,10 +86,10 @@ export class AddPostComponent implements OnInit {
   }
 
   fetchConcepts(): void {
-    //TODO make reactionary
-    this.postService.getConceptsByAuthorId(1).subscribe({
+    this.postService.getConceptsByAuthorId(2).subscribe({
       next: (concepts) => {
         this.concepts = concepts;
+        console.log(concepts)
         console.log(this.concepts);
       },
       error: (error) => {
@@ -104,8 +104,8 @@ export class AddPostComponent implements OnInit {
       content: concept.content,
       previewContent: concept.previewContent,
       imageUrl: concept.imageUrl,
-      // Optionally set the author ID if needed
-      authorId: concept.author.id
+      authorId: concept.author.id,
+      category: concept.category
     });
     this.selectedConceptid.set(concept.id);
     this.selectedConceptTitle.set(concept.title);
