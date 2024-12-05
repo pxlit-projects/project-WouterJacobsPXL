@@ -37,6 +37,8 @@ public class PostRequestDto {
     @NotBlank(message = "Category is required.")
     private String category;
 
+    private Boolean inReview;
+
     @NotNull(message = "Author ID is required.")
     @Positive(message = "Author ID must be a positive number.")
     private Long authorId;

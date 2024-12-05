@@ -1,15 +1,13 @@
-package be.pxl.api.dto;
+package be.pxl.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostResponseDto {
+public class Post {
     private Long id;
     private String title;
     private Boolean isConcept;
@@ -18,5 +16,4 @@ public class PostResponseDto {
     private String imageUrl;
     private String category;
     private Boolean inReview;
-    private AuthorDto author;
 }

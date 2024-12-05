@@ -45,9 +45,11 @@ public class Post {
     @NotBlank(message = "Category is required.")
     private String category;
 
+    @Column(name = "in_review", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean inReview;
+
     @NotNull(message = "Author is required.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
-
 }

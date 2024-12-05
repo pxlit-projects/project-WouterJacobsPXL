@@ -26,8 +26,6 @@ public class PostController {
 
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
-
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createPost(
             @Valid @RequestBody PostRequestDto postRequestDto,

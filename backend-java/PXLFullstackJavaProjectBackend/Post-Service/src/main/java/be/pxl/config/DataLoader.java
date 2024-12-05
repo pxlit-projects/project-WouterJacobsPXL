@@ -49,6 +49,7 @@ public class DataLoader implements CommandLineRunner {
                 // Generate random counts for published and concept posts
                 int publishedPostsCount = ThreadLocalRandom.current().nextInt(1, 5); // Random between 1 and 4
                 int conceptPostsCount = ThreadLocalRandom.current().nextInt(1, 4);   // Random between 1 and 3
+                int reviewPostsCount = ThreadLocalRandom.current().nextInt(1, 4);   // Random between 1 and 3
 
                 logger.info("Creating {} published and {} concept posts for author {} {}",
                         publishedPostsCount, conceptPostsCount, author.getFirstName(), author.getLastName());
@@ -65,6 +66,7 @@ public class DataLoader implements CommandLineRunner {
                             .isConcept(false)
                             .category(categories.get(i -1))
                             .author(author)
+                            .inReview(false)
                             .build();
                     postRepository.save(post);
                 }
@@ -81,11 +83,28 @@ public class DataLoader implements CommandLineRunner {
                             .isConcept(true)
                             .category(categories.get(i -1))
                             .author(author)
+                            .inReview(false)
                             .build();
                     postRepository.save(concept);
                 }
-            });
 
+                // Add posts in review
+                for (int i = 1; i <= reviewPostsCount; i++) {
+                    Post post = Post.builder()
+                            .title("In review Post " + i + " by " + author.getFirstName())
+                            .content("This is the content of published post " + i + " by " + author.getFirstName()
+                                    + " lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum" +
+                                    " lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.")
+                            .previewContent("Preview content of the published post " + i + " lorem ipsum lorem ipsum lorem ipsum.")
+                            .imageUrl("https://example.com/images/post" + i + ".jpg")
+                            .isConcept(false)
+                            .category(categories.get(i -1))
+                            .author(author)
+                            .inReview(true)
+                            .build();
+                    postRepository.save(post);
+                }
+            });
             logger.info("Random mock posts added for each author.");
         } else {
             logger.info("Posts already initialized.");

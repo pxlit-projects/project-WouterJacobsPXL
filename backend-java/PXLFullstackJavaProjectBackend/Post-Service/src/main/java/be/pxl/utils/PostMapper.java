@@ -24,6 +24,7 @@ public class PostMapper {
                     .previewContent(request.getPreviewContent())
                     .imageUrl(request.getImageUrl())
                     .category(request.getCategory())
+                    .inReview(request.getInReview() != null ? request.getInReview() : false) // Default to false
                     .author(author)
                     .build();
             logger.info("Mapping PostRequestDto to Post entity successful");
@@ -43,6 +44,8 @@ public class PostMapper {
                     .previewContent(post.getPreviewContent())
                     .imageUrl(post.getImageUrl())
                     .category(post.getCategory())
+                    .isConcept(post.getIsConcept())
+                    .inReview(post.getInReview())
                     .author(toAuthorSummary(post.getAuthor()))
                     .build();
             logger.info("Mapping Post entity to PostRequestDto successful");

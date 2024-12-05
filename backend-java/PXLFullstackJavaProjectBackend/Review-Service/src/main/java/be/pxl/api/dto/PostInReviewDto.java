@@ -1,5 +1,6 @@
 package be.pxl.api.dto;
 
+import be.pxl.domain.ReviewStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,14 +10,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostResponseDto {
-    private Long id;
+public class PostInReviewDto {
+    // Post fields
+    private Long postId;
     private String title;
-    private Boolean isConcept;
     private String content;
     private String previewContent;
     private String imageUrl;
     private String category;
-    private Boolean inReview;
     private AuthorDto author;
+
+    // ReviewPost fields
+    private Long reviewPostId;
+    private ReviewStatus reviewStatus;
+    private Long reviewerId;
 }
