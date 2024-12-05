@@ -63,7 +63,7 @@ public class DataLoader implements CommandLineRunner {
                             .previewContent("Preview content of the published post " + i + " lorem ipsum lorem ipsum lorem ipsum.")
                             .imageUrl("https://example.com/images/post" + i + ".jpg")
                             .isConcept(false)
-                            .category(categories.get(i))
+                            .category(categories.get(i -1))
                             .author(author)
                             .build();
                     postRepository.save(post);
@@ -79,7 +79,7 @@ public class DataLoader implements CommandLineRunner {
                             .previewContent("Preview of concept post " + i + " lorem ipsum lorem ipsum lorem ipsum." )
                             .imageUrl("https://example.com/images/concept" + i + ".jpg")
                             .isConcept(true)
-                            .category(categories.get(i))
+                            .category(categories.get(i -1))
                             .author(author)
                             .build();
                     postRepository.save(concept);

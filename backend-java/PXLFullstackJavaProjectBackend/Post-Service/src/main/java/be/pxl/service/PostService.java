@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PostService {
+public class PostService implements IPostService{
     private final Validator validator;
     private final PostRepository postRepository;
     private final AuthorRepository authorRepository;

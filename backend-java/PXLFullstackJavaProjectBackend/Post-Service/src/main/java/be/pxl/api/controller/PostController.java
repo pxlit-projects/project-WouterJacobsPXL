@@ -20,7 +20,6 @@ public class PostController {
     private final PostService postService;
     //TODO add 400ths , 500ths error codes
 
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createPost(@Valid @RequestBody PostRequestDto postRequestDto) {
         postService.addPost(postRequestDto);
