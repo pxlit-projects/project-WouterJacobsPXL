@@ -1,0 +1,73 @@
+<div class="blog-review-container">
+  <h1>Blog Post Reviews</h1>
+
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+      <mat-cell *matCellDef="let post">
+        <span class="post-title" (click)="viewPostDetails(post)">
+          {{ post.title }}
+        </span>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Author Column -->
+    <ng-container matColumnDef="author">
+      <mat-header-cell *matHeaderCellDef>Author</mat-header-cell>
+      <mat-cell *matCellDef="let post">{{ post.author.name }}</mat-cell>
+    </ng-container>
+
+    <!-- Category Column -->
+    <ng-container matColumnDef="category">
+      <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+      <mat-cell *matCellDef="let post">{{ post.category }}</mat-cell>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+      <mat-cell *matCellDef="let post">
+        <mat-chip-listbox>
+          <mat-basic-chip
+            [color]="getStatusColor(post.reviewStatus)"
+           >
+            {{ post.reviewStatus }}
+          </mat-basic-chip>
+        </mat-chip-listbox>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let post">
+        <div class="action-buttons">
+          <button mat-raised-button
+                  color="primary"
+                  (click)="updatePostStatus(post, 'APPROVED')">
+            Approve
+          </button>
+          <button mat-raised-button
+                  color="accent"
+                  (click)="updatePostStatus(post, 'REJECTED')">
+            Reject
+          </button>
+          <button mat-raised-button
+                  color="secondary"
+                  (click)="updatePostStatus(post, 'REVISION_REQUIRED')">
+            Request Revision
+          </button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons>
+  </mat-paginator>
+</div>

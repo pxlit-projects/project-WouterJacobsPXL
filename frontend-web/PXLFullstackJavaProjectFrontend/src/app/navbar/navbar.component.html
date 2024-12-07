@@ -7,6 +7,11 @@
       <mat-icon>post_add</mat-icon>
       Create New Post
     </button>
+    <button mat-button routerLink="posts/reviews" class="reviews-button">
+      <mat-icon [matBadge]="pendingReviews" matBadgeColor="accent" matBadgeOverlap="false" matBadgePosition="above after">
+        reviews
+      </mat-icon>
+    </button>
   }
   <button mat-button  routerLink="/login">Login</button>
 </mat-toolbar>

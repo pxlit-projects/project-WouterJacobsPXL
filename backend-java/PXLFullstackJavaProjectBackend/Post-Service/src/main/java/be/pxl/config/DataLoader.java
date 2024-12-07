@@ -89,7 +89,7 @@ public class DataLoader implements CommandLineRunner {
                 }
 
                 // Add posts in review
-                for (int i = 1; i <= reviewPostsCount; i++) {
+                for (int i = 1; i <= 3; i++) {
                     Post post = Post.builder()
                             .title("In review Post " + i + " by " + author.getFirstName())
                             .content("This is the content of published post " + i + " by " + author.getFirstName()
@@ -98,7 +98,7 @@ public class DataLoader implements CommandLineRunner {
                             .previewContent("Preview content of the published post " + i + " lorem ipsum lorem ipsum lorem ipsum.")
                             .imageUrl("https://example.com/images/post" + i + ".jpg")
                             .isConcept(false)
-                            .category(categories.get(i -1))
+                            .category(categories.get(i - 1))
                             .author(author)
                             .inReview(true)
                             .build();
