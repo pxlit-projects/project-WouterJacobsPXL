@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, inject, OnInit, ViewChild} from '@angular/core';
 import {ReviewService, PostInReviewDto} from "../../services/review-service/review.service";
 import {
   MatCell, MatCellDef,
@@ -14,6 +14,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatButton} from "@angular/material/button";
 import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {BlogPostDetailDialogComponent} from "../post-dialog/post-dialog.component";
+import {MatSort, MatSortHeader} from "@angular/material/sort";
 
 @Component({
   selector: 'app-post-review',
@@ -32,12 +33,14 @@ import {BlogPostDetailDialogComponent} from "../post-dialog/post-dialog.componen
     MatCellDef,
     MatChipListbox,
     MatChip,
-    MatTable
+    MatTable,
+    MatSortHeader,
+    MatSort
   ],
   templateUrl: './post-review.component.html',
   styleUrl: './post-review.component.css'
 })
-export class PostReviewComponent implements OnInit {
+export class PostReviewComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'title',
     'author',
@@ -48,9 +51,17 @@ export class PostReviewComponent implements OnInit {
   dataSource = new MatTableDataSource<PostInReviewDto>([]);
   blogReviewService: ReviewService = inject(ReviewService);
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
   constructor(
     private dialog: MatDialog
   ) {}
+
 
   async ngOnInit() {
     await this.loadAllReviews();
