@@ -70,7 +70,7 @@ public class PostService implements IPostService {
                     throw new InvalidPostException("Cannot modify a published post");
                 }
             }
-
+            newPost.setInReview(true);
             postRepository.save(newPost);
             logger.info("New post saved successfully. Post details: {}", newPost);
         } catch (AuthorNotFoundException e) {
