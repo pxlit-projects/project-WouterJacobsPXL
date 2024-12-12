@@ -22,10 +22,8 @@ import {ReviewService} from "../services/review-service/review.service";
 })
 export class NavbarComponent implements OnInit {
   ngOnInit(): void {
-      this.pendingReviewsPromise = this.reviewService.getNumberOfPendingReviews().then(reviews => this.pendingReviews = reviews);
+    this.reviewService.getNumberOfPendingReviews();
   }
   loginService: LoginService = inject(LoginService);
   reviewService: ReviewService = inject(ReviewService);
-  pendingReviewsPromise!: Promise<number>;
-  pendingReviews: number = 0;
 }

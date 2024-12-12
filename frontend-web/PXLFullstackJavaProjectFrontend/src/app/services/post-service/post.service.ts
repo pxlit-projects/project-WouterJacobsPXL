@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {catchError, filter, from, map, Observable, of, throwError} from "rxjs";
 import {Post} from "../../models/post.model";
 import {Author} from "../../models/author";
 import axios from "axios";
+import {ReviewService} from "../review-service/review.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
   private readonly API_URL = 'http://localhost:8085/post/api/posts';
+
+  reviewService: ReviewService = inject(ReviewService);
 
   constructor() { }
 
@@ -68,7 +71,10 @@ export class PostService {
 
   createPost(postData: any): Observable<any> {
     return from(axios.post(this.API_URL, postData)).pipe(
-      map(response => response.data),
+      map(response => {
+        this.reviewService.getNumberOfPendingReviews();
+        return response.data;
+      }),
       catchError(error => {
         console.error('Error creating post:', error);
         return throwError(() => new Error('Failed to create post. Please try again later.'));

@@ -86,7 +86,7 @@ export class AddPostComponent implements OnInit {
   }
 
   fetchConcepts(): void {
-    this.postService.getConceptsByAuthorId(2).subscribe({
+    this.postService.getConceptsByAuthorId(Number(localStorage.getItem("authorId"))).subscribe({
       next: (concepts) => {
         this.concepts = concepts;
         console.log(concepts)

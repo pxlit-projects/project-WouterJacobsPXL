@@ -8,7 +8,7 @@
       Create New Post
     </button>
     <button mat-button routerLink="posts/reviews" class="reviews-button">
-      <mat-icon [matBadge]="pendingReviews" matBadgeColor="accent" matBadgeOverlap="false" matBadgePosition="above after">
+      <mat-icon [matBadge]="reviewService.numberOfReviews().valueOf()" matBadgeColor="accent" matBadgeOverlap="false" matBadgePosition="above after">
         reviews
       </mat-icon>
     </button>
