@@ -1,13 +1,16 @@
 package be.pxl.service;
 
 import be.pxl.api.dto.PostInReviewDto;
+import be.pxl.api.dto.PostInReviewRequestDto;
 import be.pxl.api.dto.PostResponseDto;
 import be.pxl.client.PostServiceClient;
 import be.pxl.domain.Post;
 import be.pxl.domain.PostReview;
 import be.pxl.domain.ReviewStatus;
+import be.pxl.exception.PostReviewNotFoundException;
 import be.pxl.repository.PostReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
+    //TODO add logging
     private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
     private final PostServiceClient postClient;
 
@@ -54,6 +58,21 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+    public void updateStatusOfReview(PostInReviewRequestDto reviewRequestDto){
+        //Todo add a call so the in review when approves also changes in the post-service database.
+        // make an extra controller and service function for this.
+        if (reviewRequestDto.getReviewStatus() == null) throw new IllegalArgumentException("ReviewStatus cannot be null");
+        PostReview postReview = postReviewRepository.findById(reviewRequestDto.getReviewPostId()).orElseThrow(
+                () -> new PostReviewNotFoundException("post review with id: %s not found".formatted(reviewRequestDto.getReviewPostId())));
+
+        if (reviewRequestDto.getReviewStatus() != ReviewStatus.PENDING && !reviewRequestDto.getReviewStatus().equals(postReview.getReviewStatus())){
+            postReview.setReviewStatus(reviewRequestDto.getReviewStatus());
+            postReviewRepository.save(postReview);
+        }
+        if (postReview.getReviewStatus().equals(ReviewStatus.APPROVED)){
+             //Todo change to a call
+        }
+    }
 
     private void updateDatabase(){
         logger.info("Updating Review database...");
