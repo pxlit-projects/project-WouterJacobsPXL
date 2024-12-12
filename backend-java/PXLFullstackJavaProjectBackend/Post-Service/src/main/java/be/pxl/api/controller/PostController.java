@@ -50,6 +50,17 @@ public class PostController {
         }
     }
 
+    @GetMapping(value = "/in-review",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PostResponseDto>> getAllPostsInReview(HttpServletRequest request) {
+        try {
+            logRequestDetails(request, "Get All Posts");
+            List<PostResponseDto> posts = postService.getPostsInReview();
+            return ResponseEntity.ok(posts);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long id, HttpServletRequest request) {
         try {

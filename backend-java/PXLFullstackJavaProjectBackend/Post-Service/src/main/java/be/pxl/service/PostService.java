@@ -179,6 +179,7 @@ public class PostService implements IPostService {
         try {
             List<PostResponseDto> publishedPosts = postRepository.findAll().stream()
                     .filter(post -> Boolean.FALSE.equals(post.getIsConcept()))
+                    .filter(post -> Boolean.FALSE.equals(post.getInReview()))
                     .map(PostMapper::toResponse)
                     .collect(Collectors.toList());
 
@@ -188,6 +189,25 @@ public class PostService implements IPostService {
             return publishedPosts;
         } catch (Exception e) {
             logger.error("Error occurred while retrieving published posts", e);
+            throw e;
+        }
+    }
+
+    public List<PostResponseDto> getPostsInReview() {
+        logger.info("Retrieving all posts in review");
+
+        try {
+            List<PostResponseDto> postsInReview = postRepository.findAll().stream()
+                    .filter(post -> Boolean.TRUE.equals(post.getInReview()))
+                    .map(PostMapper::toResponse)
+                    .collect(Collectors.toList());
+
+            logger.debug("Retrieved {} posts in review", postsInReview.size());
+            logger.trace("Posts in review details: {}", postsInReview);
+
+            return postsInReview;
+        } catch (Exception e) {
+            logger.error("Error occurred while retrieving posts in review", e);
             throw e;
         }
     }

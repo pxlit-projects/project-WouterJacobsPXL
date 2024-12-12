@@ -4,13 +4,11 @@ import be.pxl.api.dto.PostInReviewDto;
 import be.pxl.api.dto.PostInReviewRequestDto;
 import be.pxl.api.dto.PostResponseDto;
 import be.pxl.client.PostServiceClient;
-import be.pxl.domain.Post;
 import be.pxl.domain.PostReview;
 import be.pxl.domain.ReviewStatus;
 import be.pxl.exception.PostReviewNotFoundException;
 import be.pxl.repository.PostReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,12 +32,13 @@ public class ReviewService {
         logger.info("getting all posts in review");
         List<PostReview> postReviews = postReviewRepository.findAll();
 
-        List<PostResponseDto> externalPosts = postClient.getPosts();
+        List<PostResponseDto> externalPosts = postClient.getPostsInReview();
 
         Map<Long, PostResponseDto> postDtoMap = externalPosts.stream()
                 .collect(Collectors.toMap(PostResponseDto::getId, post -> post));
 
         return postReviews.stream()
+                .filter(postReview -> !postReview.getReviewStatus().equals(ReviewStatus.APPROVED))
                 .map(postReview -> {
                     PostResponseDto postDto = postDtoMap.get(postReview.getPostId()); // Find matching PostResponseDto
                     return PostInReviewDto.builder()
@@ -76,7 +75,7 @@ public class ReviewService {
 
     private void updateDatabase(){
         logger.info("Updating Review database...");
-        List<PostResponseDto> posts = postClient.getPosts();
+        List<PostResponseDto> posts = postClient.getPostsInReview();
         List<PostReview> allPostsInReview = postReviewRepository.findAll();
 
         Set<Long> existingPostIds = allPostsInReview.stream()
