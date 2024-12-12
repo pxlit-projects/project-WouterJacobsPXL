@@ -70,7 +70,7 @@ public class ReviewService {
             postReviewRepository.save(postReview);
         }
         if (postReview.getReviewStatus().equals(ReviewStatus.APPROVED)){
-             //Todo change to a call
+            postClient.approvePost(postReview.getPostId());
         }
     }
 

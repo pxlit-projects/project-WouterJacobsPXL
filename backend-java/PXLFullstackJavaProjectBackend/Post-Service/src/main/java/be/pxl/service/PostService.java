@@ -269,6 +269,18 @@ public class PostService implements IPostService {
         }
     }
 
+    public void approvePost(Long id){
+        logger.info("Attempting to retrieve unpublished post with ID: {}", id);
+
+        Post post = postRepository.findById(id).orElseThrow(() -> {
+            logger.warn("Published post not found with ID: {}", id);
+            return new PostNotFoundException("Post with id: %d not found".formatted(id));
+        });
+
+        post.setInReview(false);
+        postRepository.save(post);
+    }
+
 
     private Author findAuthorById(long id) {
         Author author = authorRepository.findById(id)

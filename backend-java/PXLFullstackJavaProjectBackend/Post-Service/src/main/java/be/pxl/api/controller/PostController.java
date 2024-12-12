@@ -109,6 +109,17 @@ public class PostController {
         }
     }
 
+    @PutMapping(value = "/approve/{id}")
+    public ResponseEntity<?> approvePost(@PathVariable Long id, HttpServletRequest request){
+        try{
+            logRequestDetails(request, id);
+            postService.approvePost(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     private void logRequestDetails(HttpServletRequest request, Object payload) {
         try {
             String ipAddress = getClientIpAddress(request);
