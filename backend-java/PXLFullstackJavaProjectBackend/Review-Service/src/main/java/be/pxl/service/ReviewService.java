@@ -66,6 +66,9 @@ public class ReviewService {
 
         if (reviewRequestDto.getReviewStatus() != ReviewStatus.PENDING && !reviewRequestDto.getReviewStatus().equals(postReview.getReviewStatus())){
             postReview.setReviewStatus(reviewRequestDto.getReviewStatus());
+            if (reviewRequestDto.getRejectionReason() != null){
+                postReview.setRejectionReason(reviewRequestDto.getRejectionReason());
+            }
             postReviewRepository.save(postReview);
         }
         if (postReview.getReviewStatus().equals(ReviewStatus.APPROVED)){

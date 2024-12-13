@@ -1,5 +1,5 @@
 .blog-review-container {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 20px;
 
@@ -14,7 +14,11 @@
     width: 100%;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .mat-row {
+    border-bottom: 1px solid #f1f1f1;
+  }
   }
 
   .post-title {
@@ -29,12 +33,17 @@
 
   .action-buttons {
     display: flex;
+    align-items: center;
+    justify-content: flex-start;
     gap: 10px;
 
     button {
-      flex: 1;
+      flex-shrink: 0;
       text-transform: uppercase;
       font-weight: 500;
+      white-space: nowrap;
+      min-width: 100px;
+      padding: 8px 16px;
     }
   }
 
@@ -55,5 +64,29 @@
       background-color: #9c27b0;
       color: white;
     }
+  }
+  .mat-column-title {
+    flex: 2 0 auto;
+    width: 5%;
+  }
+
+  .mat-column-author {
+    flex: 1 0 auto;
+    width: 5%;
+  }
+
+  .mat-column-category {
+    flex: 1 0 auto;
+    width: 5%;
+  }
+
+  .mat-column-status {
+    flex: 1 0 auto;
+    width: 5%;
+  }
+
+  .mat-column-actions {
+    flex: 1 0 auto;
+    width: 23%;
   }
 }

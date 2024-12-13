@@ -43,18 +43,21 @@
         <div class="action-buttons">
           <button mat-raised-button
                   color="primary"
-                  (click)="updatePostStatus(post, 'APPROVED')">
+                  (click)="updatePostStatus(post, 'APPROVED')"
+                  [disabled]="post.reviewStatus === 'REJECTED'">
             Approve
           </button>
           <button mat-raised-button
                   color="accent"
-                  (click)="updatePostStatus(post, 'REJECTED')">
+                  (click)="updatePostStatus(post, 'REJECTED')"
+                  [disabled]="post.reviewStatus === 'REJECTED'">
             Reject
           </button>
           <button mat-raised-button
                   color="secondary"
-                  (click)="updatePostStatus(post, 'REVISION_REQUIRED')">
-            Request Revision
+                  (click)="updatePostStatus(post, 'REVISION_REQUIRED')"
+                  [disabled]="post.reviewStatus === 'REJECTED'">
+            Needs Revision
           </button>
         </div>
       </mat-cell>

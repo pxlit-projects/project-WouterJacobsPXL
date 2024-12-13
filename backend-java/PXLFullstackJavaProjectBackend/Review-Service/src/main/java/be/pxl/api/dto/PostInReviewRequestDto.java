@@ -2,6 +2,7 @@ package be.pxl.api.dto;
 
 import be.pxl.domain.ReviewStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,4 +20,6 @@ public class PostInReviewRequestDto {
     private Long reviewPostId;
     private ReviewStatus reviewStatus;
     private Long reviewerId;
+    @Nullable
+    private String rejectionReason;
 }

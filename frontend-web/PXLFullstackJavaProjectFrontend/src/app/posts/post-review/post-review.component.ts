@@ -15,6 +15,9 @@ import {MatButton} from "@angular/material/button";
 import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {BlogPostDetailDialogComponent} from "../post-dialog/post-dialog.component";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
+import {
+  RejectionReasonDialogComponent
+} from "../rejection-reason-dialog-component/rejection-reason-dialog-component.component";
 
 @Component({
   selector: 'app-post-review',
@@ -86,10 +89,33 @@ export class PostReviewComponent implements OnInit, AfterViewInit {
 
   async updatePostStatus(post: PostInReviewDto, status: string) {
     try {
-      await this.blogReviewService.updateReviewStatus(post.reviewPostId, status);
-      await this.loadAllReviews();
+      if (status === 'REJECTED') {
+        const rejectionReason = await this.openRejectionReasonDialog();
+        if (rejectionReason) {
+          await this.blogReviewService.updateReviewStatus(post.reviewPostId, status, rejectionReason);
+          await this.loadAllReviews();
+        }
+      } else {
+        await this.blogReviewService.updateReviewStatus(post.reviewPostId, status);
+        await this.loadAllReviews();
+      }
     } catch (error) {
       console.error('Error updating post status:', error);
+    }
+  }
+
+  async openRejectionReasonDialog(): Promise<string | null> {
+    const dialogRef = this.dialog.open(RejectionReasonDialogComponent, {
+      width: '400px',
+      data: {}
+    });
+
+    try {
+      const result = await dialogRef.afterClosed().toPromise();
+      return result;
+    } catch (error) {
+      console.error('Error opening rejection reason dialog:', error);
+      return null;
     }
   }
 

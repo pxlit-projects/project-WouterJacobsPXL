@@ -20,6 +20,12 @@ export interface PostInReviewDto {
   reviewerId: number;
 }
 
+interface UpdateReviewStatusDto {
+  reviewPostId: number;
+  reviewStatus: string;
+  rejectionReason?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -51,9 +57,14 @@ export class ReviewService {
     }
   }
 
-  async updateReviewStatus(reviewPostId: number, status: string): Promise<any> {
+  async updateReviewStatus(reviewPostId: number, status: string, rejectionReason?: string): Promise<any> {
     try {
-      const response = await axios.patch(`${this.apiUrl}/${reviewPostId}/status`, { status });
+      const requestDto: UpdateReviewStatusDto = {
+        reviewPostId,
+        reviewStatus: status,
+        rejectionReason
+      };
+      const response = await axios.put(`${this.apiUrl}`, requestDto);
       this.getNumberOfPendingReviews();
       return response.data;
     } catch (error) {

@@ -1,5 +1,6 @@
 package be.pxl.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,4 +25,7 @@ public class PostReview {
 
     @Column(name = "reviewer_id")
     private Long reviewerId;
+
+    @Nullable
+    private String rejectionReason;
 }
