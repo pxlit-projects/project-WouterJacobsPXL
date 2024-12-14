@@ -39,7 +39,20 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
 
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"     # AMQP protocol port
+      - "15672:15672"   # Management UI port
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
 volumes:
   mariadb-post-service-data:
   mariadb-comment-service-data:
   mariadb-review-service-data:
+  rabbitmq-data:

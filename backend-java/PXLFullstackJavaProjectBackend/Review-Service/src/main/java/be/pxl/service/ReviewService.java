@@ -21,82 +21,137 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
-    //TODO add logging
     private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
-    private final PostServiceClient postClient;
 
+    private final PostServiceClient postClient;
+    private final MessageService messageService;
     private final PostReviewRepository postReviewRepository;
 
     public List<PostInReviewDto> getAllPostsInReview() {
-        updateDatabase();
-        logger.info("getting all posts in review");
-        List<PostReview> postReviews = postReviewRepository.findAll();
+        logger.debug("Starting to retrieve all posts in review");
 
-        List<PostResponseDto> externalPosts = postClient.getPostsInReview();
+        try {
+            updateDatabase();
 
-        Map<Long, PostResponseDto> postDtoMap = externalPosts.stream()
-                .collect(Collectors.toMap(PostResponseDto::getId, post -> post));
+            List<PostReview> postReviews = postReviewRepository.findAll();
+            logger.info("Retrieved {} total post reviews from database", postReviews.size());
 
-        return postReviews.stream()
-                .filter(postReview -> !postReview.getReviewStatus().equals(ReviewStatus.APPROVED))
-                .map(postReview -> {
-                    PostResponseDto postDto = postDtoMap.get(postReview.getPostId()); // Find matching PostResponseDto
-                    return PostInReviewDto.builder()
-                            .postId(postReview.getPostId())
-                            .title(postDto != null ? postDto.getTitle() : null)
-                            .content(postDto != null ? postDto.getContent() : null)
-                            .previewContent(postDto != null ? postDto.getPreviewContent() : null)
-                            .imageUrl(postDto != null ? postDto.getImageUrl() : null)
-                            .category(postDto != null ? postDto.getCategory() : null)
-                            .author(postDto != null ? postDto.getAuthor() : null)
-                            .reviewPostId(postReview.getId())
-                            .reviewStatus(postReview.getReviewStatus())
-                            .reviewerId(postReview.getReviewerId())
-                            .build();
-                })
-                .collect(Collectors.toList());
+            List<PostResponseDto> externalPosts = postClient.getPostsInReview();
+            logger.info("Retrieved {} posts from external service", externalPosts.size());
+
+            Map<Long, PostResponseDto> postDtoMap = externalPosts.stream()
+                    .collect(Collectors.toMap(PostResponseDto::getId, post -> post));
+
+            List<PostInReviewDto> postsInReview = postReviews.stream()
+                    .filter(postReview -> !postReview.getReviewStatus().equals(ReviewStatus.APPROVED))
+                    .map(postReview -> {
+                        PostResponseDto postDto = postDtoMap.get(postReview.getPostId());
+
+                        PostInReviewDto reviewDto = PostInReviewDto.builder()
+                                .postId(postReview.getPostId())
+                                .title(postDto != null ? postDto.getTitle() : null)
+                                .content(postDto != null ? postDto.getContent() : null)
+                                .previewContent(postDto != null ? postDto.getPreviewContent() : null)
+                                .imageUrl(postDto != null ? postDto.getImageUrl() : null)
+                                .category(postDto != null ? postDto.getCategory() : null)
+                                .author(postDto != null ? postDto.getAuthor() : null)
+                                .reviewPostId(postReview.getId())
+                                .reviewStatus(postReview.getReviewStatus())
+                                .reviewerId(postReview.getReviewerId())
+                                .build();
+
+                        logger.debug("Mapped post review: postId={}, reviewStatus={}",
+                                postReview.getPostId(), postReview.getReviewStatus());
+
+                        return reviewDto;
+                    })
+                    .collect(Collectors.toList());
+
+            logger.info("Returning {} posts in review", postsInReview.size());
+            return postsInReview;
+        } catch (Exception e) {
+            logger.error("Error retrieving posts in review", e);
+            throw e;
+        }
     }
 
-    public void updateStatusOfReview(PostInReviewRequestDto reviewRequestDto){
-        //Todo add a call so the in review when approves also changes in the post-service database.
-        // make an extra controller and service function for this.
-        if (reviewRequestDto.getReviewStatus() == null) throw new IllegalArgumentException("ReviewStatus cannot be null");
-        PostReview postReview = postReviewRepository.findById(reviewRequestDto.getReviewPostId()).orElseThrow(
-                () -> new PostReviewNotFoundException("post review with id: %s not found".formatted(reviewRequestDto.getReviewPostId())));
+    public void updateStatusOfReview(PostInReviewRequestDto reviewRequestDto) {
+        logger.debug("Attempting to update review status: reviewPostId={}", reviewRequestDto.getReviewPostId());
 
-        if (reviewRequestDto.getReviewStatus() != ReviewStatus.PENDING && !reviewRequestDto.getReviewStatus().equals(postReview.getReviewStatus())){
+        if (reviewRequestDto.getReviewStatus() == null) {
+            logger.error("Attempted to update review with null review status");
+            throw new IllegalArgumentException("ReviewStatus cannot be null");
+        }
+
+        PostReview postReview = postReviewRepository.findById(reviewRequestDto.getReviewPostId())
+                .orElseThrow(() -> {
+                    logger.error("Post review not found: id={}", reviewRequestDto.getReviewPostId());
+                    return new PostReviewNotFoundException(
+                            "post review with id: %s not found".formatted(reviewRequestDto.getReviewPostId())
+                    );
+                });
+
+        if (reviewRequestDto.getReviewStatus() != ReviewStatus.PENDING &&
+                !reviewRequestDto.getReviewStatus().equals(postReview.getReviewStatus())) {
+
+            logger.info("Updating review status: postId={}, oldStatus={}, newStatus={}",
+                    postReview.getPostId(), postReview.getReviewStatus(), reviewRequestDto.getReviewStatus());
+
             postReview.setReviewStatus(reviewRequestDto.getReviewStatus());
-            if (reviewRequestDto.getRejectionReason() != null){
+
+            if (reviewRequestDto.getRejectionReason() != null) {
+                logger.debug("Adding rejection reason to post review");
                 postReview.setRejectionReason(reviewRequestDto.getRejectionReason());
+                messageService.sendRejectionMessage(reviewRequestDto.getRejectionReason());
             }
+
             postReviewRepository.save(postReview);
         }
-        if (postReview.getReviewStatus().equals(ReviewStatus.APPROVED)){
+
+        if (postReview.getReviewStatus().equals(ReviewStatus.APPROVED)) {
+            logger.info("Approving post: postId={}", postReview.getPostId());
             postClient.approvePost(postReview.getPostId());
         }
     }
 
-    private void updateDatabase(){
-        logger.info("Updating Review database...");
-        List<PostResponseDto> posts = postClient.getPostsInReview();
-        List<PostReview> allPostsInReview = postReviewRepository.findAll();
+    private void updateDatabase() {
+        logger.debug("Starting database update process for reviews");
 
-        Set<Long> existingPostIds = allPostsInReview.stream()
-                .map(PostReview::getPostId)
-                .collect(Collectors.toSet());
+        try {
+            List<PostResponseDto> posts = postClient.getPostsInReview();
+            logger.info("Retrieved {} posts from external service", posts.size());
 
-        List<PostReview> newPostsInReview = posts.stream()
-                .filter(PostResponseDto::getInReview)
-                .filter(post -> !existingPostIds.contains(post.getId())) // Exclude posts already in the DB
-                .map(post -> PostReview.builder()
-                        .postId(post.getId())
-                        .reviewStatus(ReviewStatus.PENDING) // Default status for new reviews
-                        .reviewerId(null)
-                        .build())
-                .collect(Collectors.toList());
+            List<PostReview> allPostsInReview = postReviewRepository.findAll();
+            logger.debug("Current number of posts in review database: {}", allPostsInReview.size());
 
-        if (!newPostsInReview.isEmpty()) {
-            postReviewRepository.saveAll(newPostsInReview);
+            Set<Long> existingPostIds = allPostsInReview.stream()
+                    .map(PostReview::getPostId)
+                    .collect(Collectors.toSet());
+
+            List<PostReview> newPostsInReview = posts.stream()
+                    .filter(PostResponseDto::getInReview)
+                    .filter(post -> !existingPostIds.contains(post.getId()))
+                    .map(post -> {
+                        PostReview newReview = PostReview.builder()
+                                .postId(post.getId())
+                                .reviewStatus(ReviewStatus.PENDING)
+                                .reviewerId(null)
+                                .build();
+
+                        logger.debug("Creating new post review: postId={}", post.getId());
+                        return newReview;
+                    })
+                    .collect(Collectors.toList());
+
+            if (!newPostsInReview.isEmpty()) {
+                logger.info("Saving {} new posts to review database", newPostsInReview.size());
+                postReviewRepository.saveAll(newPostsInReview);
+            } else {
+                logger.debug("No new posts to add to review database");
+            }
+        } catch (Exception e) {
+            logger.error("Error updating review database", e);
+            throw e;
         }
     }
 }
