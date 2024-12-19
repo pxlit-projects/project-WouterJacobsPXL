@@ -64,4 +64,38 @@
       </mat-card-actions>
     </mat-card>
   }
+  <!-- Comments Section -->
+  <mat-divider class="content-divider"></mat-divider>
+  <section class="comments-section">
+    <h3 class="comments-title">Comments</h3>
+    <p *ngIf="!comments?.length">No comments yet. Be the first to comment!</p>
+    <!-- List of comments -->
+    <div class="comment-card" *ngFor="let comment of comments; let i = index">
+      <mat-card class="comment">
+        <mat-card-header>
+          <mat-card-title class="comment-user">{{ comment.userName }}</mat-card-title>
+          <mat-card-subtitle class="comment-date">{{ comment.createdAt | date: 'medium' }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ comment.content }}</p>
+        </mat-card-content>
+        <mat-card-actions align="end" class="comment-actions">
+          <button mat-button color="accent" (click)="editComment(comment, i)">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+          <button mat-button color="warn" (click)="deleteComment(comment.id)">
+            <mat-icon>delete</mat-icon>
+            Delete
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Add comment button -->
+    <button mat-raised-button color="primary" class="add-comment-button" (click)="openAddCommentDialog()">
+      <mat-icon>add_comment</mat-icon>
+      Add Comment
+    </button>
+  </section>
 </div>

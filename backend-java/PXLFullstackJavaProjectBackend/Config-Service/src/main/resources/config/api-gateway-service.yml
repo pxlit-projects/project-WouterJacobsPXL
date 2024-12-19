@@ -40,6 +40,13 @@ spring:
           filters:
             - RewritePath=/review/(?<path>.*), /$\{path}
 
+        - id: comment-service
+          uri: lb://comment-service
+          predicates:
+            - Path=/comment/**
+          filters:
+            - RewritePath=/comment/(?<path>.*), /$\{path}
+
 eureka:
   client:
     serviceUrl:
