@@ -18,11 +18,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts")
-@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
-    //TODO add 400ths , 500ths error codes
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 

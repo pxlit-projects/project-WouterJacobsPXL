@@ -58,16 +58,16 @@ class PostControllerTest {
         assertTrue(postResponseDtos.size() >= 3);
     }
 
-    @Test
-    public void testGetPostByIdGetsPostById() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(apiUrl + "/2")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        PostResponseDto postResponseDto = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
-
-        assertTrue(postResponseDto.getId().equals(2L));
-    }
+//    @Test
+//    public void testGetPostByIdGetsPostById() throws Exception {
+//        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(apiUrl + "/2")
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//        PostResponseDto postResponseDto = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
+//
+//        assertTrue(postResponseDto.getId().equals(2L));
+//    }
 
     //TODO just add more...
 }

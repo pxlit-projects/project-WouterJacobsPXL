@@ -1,12 +1,10 @@
-# This file will contain a script in orde to start up the system (all microservices) 
 version: '3.8'
 services:
-  # Backend Services
   config-service:
     image: config-service:latest
     container_name: config-service
     build:
-      context: ./backend-java\PXLFullstackJavaProjectBackend/Config-Service
+      context: ./Config-Service
       dockerfile: Dockerfile
     ports:
       - "8088:8088"
@@ -24,7 +22,7 @@ services:
     image: discovery-service:latest
     container_name: discovery-service
     build:
-      context: ./backend-java\PXLFullstackJavaProjectBackend/Discovery-Service
+      context: ./Discovery-Service
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
@@ -45,7 +43,7 @@ services:
     image: api-gateway:latest
     container_name: api-gateway
     build:
-      context: ./backend-java\PXLFullstackJavaProjectBackend/api-gateway
+      context: ./api-gateway
       dockerfile: Dockerfile
     ports:
       - "8085:8085"
@@ -66,7 +64,7 @@ services:
     image: post-service:latest
     container_name: post-service
     build:
-      context: ./backend-java\PXLFullstackJavaProjectBackend/Post-Service
+      context: ./Post-Service
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
@@ -89,7 +87,7 @@ services:
     image: comment-service:latest
     container_name: comment-service
     build:
-      context: ./backend-java\PXLFullstackJavaProjectBackend/Comment-Service
+      context: ./Comment-Service
       dockerfile: Dockerfile
     ports:
       - "8083:8083"
@@ -112,7 +110,7 @@ services:
     image: review-service:latest
     container_name: review-service
     build:
-      context: ./backend-java\PXLFullstackJavaProjectBackend/Review-Service
+      context: ./Review-Service
       dockerfile: Dockerfile
     ports:
       - "8082:8082"
@@ -120,6 +118,8 @@ services:
       config-service:
         condition: service_healthy
       discovery-service:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=dev
@@ -135,7 +135,7 @@ services:
     image: email-service:latest
     container_name: email-service
     build:
-      context: ./backend-java\PXLFullstackJavaProjectBackend/email-service
+      context: ./email-service
       dockerfile: Dockerfile
     ports:
       - "8084:8084"
@@ -143,6 +143,8 @@ services:
       config-service:
         condition: service_healthy
       discovery-service:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=dev
@@ -212,17 +214,11 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
     networks:
       - microservice-network
-
-  # Frontend Service
-  frontend:
-    build:
-      context: ./frontend-web\PXLFullstackJavaProjectFrontend # Specify the frontend folder containing the Dockerfile
-      dockerfile: Dockerfile
-    container_name: frontend
-    ports:
-      - "8100:8100"
-    networks:
-      - microservice-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 volumes:
   mariadb-post-service-data:
