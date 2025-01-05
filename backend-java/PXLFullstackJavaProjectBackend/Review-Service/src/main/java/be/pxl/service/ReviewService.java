@@ -102,7 +102,7 @@ public class ReviewService {
             if (reviewRequestDto.getRejectionReason() != null) {
                 logger.debug("Adding rejection reason to post review");
                 postReview.setRejectionReason(reviewRequestDto.getRejectionReason());
-                messageService.sendRejectionMessage(reviewRequestDto.getRejectionReason());
+                if (messageService != null) messageService.sendRejectionMessage(reviewRequestDto.getRejectionReason());
             }
 
             postReviewRepository.save(postReview);

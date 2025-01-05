@@ -3,6 +3,7 @@ package be.pxl.api.controller;
 import be.pxl.api.dto.CreateCommentRequest;
 import be.pxl.api.dto.CommentResponse;
 import be.pxl.api.dto.UpdateCommentRequest;
+import be.pxl.exception.CommentNotFoundException;
 import be.pxl.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,12 @@ public class CommentController {
             @PathVariable Long commentId,
             @RequestParam Long authorId // Validate that this matches the logged-in user
     ) {
-        commentService.deleteComment(commentId, authorId);
-        return ResponseEntity.noContent().build();
+        try {
+            commentService.deleteComment(commentId, authorId);
+            return ResponseEntity.noContent().build();
+        }catch (CommentNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+
     }
 }

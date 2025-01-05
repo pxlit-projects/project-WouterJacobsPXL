@@ -218,6 +218,7 @@ public class PostService implements IPostService {
         try {
             return postRepository.findById(id)
                     .filter(post -> Boolean.FALSE.equals(post.getIsConcept()))
+
                     .map(post -> {
                         PostResponseDto postResponse = PostMapper.toResponse(post);
                         logger.debug("Successfully retrieved published post. Post details: {}", postResponse);
