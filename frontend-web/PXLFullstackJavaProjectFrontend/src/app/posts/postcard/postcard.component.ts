@@ -22,17 +22,16 @@ import {MatIcon} from "@angular/material/icon";
     MatCardSubtitle,
     MatCardTitle,
     MatCardImage,
-    MatButton,
-    MatCardActions,
+
     MatIcon
   ],
   templateUrl: './postcard.component.html',
   styleUrl: './postcard.component.css'
 })
 export class PostcardComponent {
-  @Input() post!:Post
+  @Input() post!: Post
 
-  router:Router = inject(Router)
+  router: Router = inject(Router)
   hoverCard: boolean = false;
 
   cardClicked() {

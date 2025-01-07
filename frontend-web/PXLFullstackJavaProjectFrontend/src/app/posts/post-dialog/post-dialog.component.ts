@@ -8,7 +8,6 @@ import {
 } from "@angular/material/dialog";
 import {PostInReviewDto} from "../../services/review-service/review.service";
 import {MatButton} from "@angular/material/button";
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-blog-post-detail-dialog',
@@ -16,7 +15,9 @@ import {NgIf} from "@angular/common";
     <h2 mat-dialog-title>{{ data.title }}</h2>
     <mat-dialog-content>
       <div class="post-details">
-        <img *ngIf="data.imageUrl" [src]="data.imageUrl" alt="Post Image" class="post-image">
+        @if(data.imageUrl){
+          <img [src]="data.imageUrl" alt="Post Image" class="post-image">
+        }
         <div class="post-info">
           <p><strong>Author:</strong> {{ data.author.name }}</p>
           <p><strong>Category:</strong> {{ data.category }}</p>
@@ -40,7 +41,6 @@ import {NgIf} from "@angular/common";
     MatButton,
     MatDialogContent,
     MatDialogTitle,
-    NgIf
   ],
   styles: [`
     .post-details {

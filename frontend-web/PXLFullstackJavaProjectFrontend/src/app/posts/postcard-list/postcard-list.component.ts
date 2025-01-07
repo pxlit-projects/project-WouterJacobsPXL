@@ -8,7 +8,6 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
-import {MatListModule} from "@angular/material/list";
 
 @Component({
   selector: 'app-postcard-list',
@@ -27,11 +26,10 @@ import {MatListModule} from "@angular/material/list";
   templateUrl: './postcard-list.component.html',
   styleUrl: './postcard-list.component.css'
 })
-export class PostcardListComponent implements OnInit{
+export class PostcardListComponent implements OnInit {
   posts: Post[] = [];
   filteredPosts: Post[] = [];
 
-  // Filter properties
   authorFilter: string = '';
   categoryFilter: string = '';
   contentFilter: string = '';

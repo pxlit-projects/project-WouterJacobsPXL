@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddCommentDialogComponent } from './add-comment-dialog.component';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {AddCommentDialogComponent} from './add-comment-dialog.component';
+import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {FormsModule} from '@angular/forms';
+import {By} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 describe('AddCommentDialogComponent', () => {
@@ -20,8 +20,8 @@ describe('AddCommentDialogComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
-        { provide: MatDialogRef, useValue: dialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: { userName: 'John Doe', content: 'Initial comment' } }
+        {provide: MatDialogRef, useValue: dialogRefSpy},
+        {provide: MAT_DIALOG_DATA, useValue: {userName: 'John Doe', content: 'Initial comment'}}
       ]
     }).compileComponents();
 
@@ -43,7 +43,7 @@ describe('AddCommentDialogComponent', () => {
     component.userName = 'Jane Doe';
     component.content = 'This is a new comment.';
     const createdAt = new Date();
-    component.data = { createdAt };
+    component.data = {createdAt};
 
     component.submitComment();
 

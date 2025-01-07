@@ -8,9 +8,9 @@
         <mat-form-field appearance="outline">
           <mat-label>Username</mat-label>
           <input matInput formControlName="username">
-          @if(username.invalid && (username.dirty || !username.untouched)){
+          @if (username.invalid && (username.dirty || !username.untouched)) {
             <mat-error>
-              @if(username.errors?.['required']){
+              @if (username.errors?.['required']) {
               }
               <span>Username is required</span>
             </mat-error>
@@ -20,9 +20,9 @@
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
           <input matInput type="password" formControlName="password">
-          @if(password.invalid && (password.dirty || !password.untouched)){
+          @if (password.invalid && (password.dirty || !password.untouched)) {
             <mat-error>
-              @if(password.errors?.['required']){
+              @if (password.errors?.['required']) {
                 <span>Password is required</span>
               }
             </mat-error>
@@ -36,7 +36,7 @@
           [disabled]="loginForm.invalid">
           Login
         </button>
-        @if(loginError){
+        @if (loginError) {
           <mat-error class="login-error">
             {{ loginError }}
           </mat-error>

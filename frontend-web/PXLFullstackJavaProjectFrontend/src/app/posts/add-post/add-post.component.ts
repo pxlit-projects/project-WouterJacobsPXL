@@ -1,19 +1,18 @@
-import {Component, OnInit, signal, Signal, WritableSignal} from '@angular/core';
+import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {PostService} from "../../services/post-service/post.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router, RouterLink} from "@angular/router";
-import {MatCard, MatCardContent, MatCardHeader, MatCardModule, MatCardTitle} from "@angular/material/card";
+import {MatCardModule} from "@angular/material/card";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {CommonModule} from "@angular/common";
-import {MatButton, MatButtonModule} from "@angular/material/button";
-import {MatIcon, MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {Post} from "../../models/post.model";
-
 
 @Component({
   selector: 'app-add-post',
@@ -38,48 +37,45 @@ import {Post} from "../../models/post.model";
   styleUrl: './add-post.component.css'
 })
 export class AddPostComponent implements OnInit {
-  postForm: FormGroup;
   isSubmitting = false;
   concepts: Post[] = [];
   selectedConceptid: WritableSignal<Number> = signal(-1)
   selectedConceptTitle: WritableSignal<String | null> = signal(null)
 
-  constructor(
-    private fb: FormBuilder,
-    private postService: PostService,
-    private snackBar: MatSnackBar,
-    private router: Router
-  ) {
-    this.postForm = this.fb.group({
-      title: ['', [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(100)
-      ]],
-      content: ['', [
-        Validators.required,
-        Validators.minLength(100),
-        Validators.maxLength(50000)
-      ]],
-      previewContent: ['', [
-        Validators.required,
-        Validators.minLength(50),
-        Validators.maxLength(500)
-      ]],
-      imageUrl: ['', [
-        Validators.required,
-        Validators.pattern('https://.*'),
-        Validators.pattern('.*\\.(jpg|jpeg|png|gif|webp)$')
-      ]],
-      category: ['', [
-        Validators.required,
-      ]],
-      authorId: ['', [
-        Validators.required,
-        Validators.min(1)
-      ]]
-    });
-  }
+  fb: FormBuilder = inject(FormBuilder);
+  postService: PostService = inject(PostService);
+  snackBar: MatSnackBar = inject(MatSnackBar);
+  router: Router = inject(Router);
+
+  postForm: FormGroup = this.fb.group({
+    title: ['', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(100)
+    ]],
+    content: ['', [
+      Validators.required,
+      Validators.minLength(100),
+      Validators.maxLength(50000)
+    ]],
+    previewContent: ['', [
+      Validators.required,
+      Validators.minLength(50),
+      Validators.maxLength(500)
+    ]],
+    imageUrl: ['', [
+      Validators.required,
+      Validators.pattern('https://.*'),
+      Validators.pattern('.*\\.(jpg|jpeg|png|gif|webp)$')
+    ]],
+    category: ['', [
+      Validators.required,
+    ]],
+    authorId: ['', [
+      Validators.required,
+      Validators.min(1)
+    ]]
+  });
 
   ngOnInit(): void {
     this.fetchConcepts()
@@ -150,7 +146,8 @@ export class AddPostComponent implements OnInit {
       this.markFormGroupTouched(this.postForm);
     }
   }
-  onDeleteConceptButtonClick(id:number): void {
+
+  onDeleteConceptButtonClick(id: number): void {
     this.postService.deleteConcept(id).subscribe({
       next: () => {
         this.snackBar.open('Concept delete successfully!', 'Close', {
@@ -159,7 +156,7 @@ export class AddPostComponent implements OnInit {
           verticalPosition: 'top',
         });
         location.reload();
-        },
+      },
       error: (error) => {
         this.isSubmitting = false;
         this.snackBar.open(error.message || 'Failed to delete concept', 'Close', {
@@ -172,7 +169,6 @@ export class AddPostComponent implements OnInit {
   }
 
   onSubmit(): void {
-    //TODO add a save as concept func.
     console.log("in on submit");
     if (this.postForm.valid) {
       this.isSubmitting = true;
@@ -181,7 +177,7 @@ export class AddPostComponent implements OnInit {
       postData.authorId = Number(postData.authorId);
       postData.isConcept = false;
 
-      if (this.selectedConceptTitle()?.valueOf() ===  postData.title) {
+      if (this.selectedConceptTitle()?.valueOf() === postData.title) {
         postData.id = this.selectedConceptid().valueOf();
       }
 
@@ -240,7 +236,6 @@ export class AddPostComponent implements OnInit {
     }
     return '';
   }
-
 
 }
 

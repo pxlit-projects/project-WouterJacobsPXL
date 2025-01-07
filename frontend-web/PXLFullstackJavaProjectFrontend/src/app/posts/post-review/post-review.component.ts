@@ -57,14 +57,12 @@ export class PostReviewComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  dialog: MatDialog = inject(MatDialog);
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  constructor(
-    private dialog: MatDialog
-  ) {}
-
 
   async ngOnInit() {
     await this.loadAllReviews();
@@ -120,12 +118,17 @@ export class PostReviewComponent implements OnInit, AfterViewInit {
   }
 
   getStatusColor(status: string): string {
-    switch(status) {
-      case 'PENDING': return 'warn';
-      case 'APPROVED': return 'primary';
-      case 'REJECTED': return 'accent';
-      case 'REVISION_REQUIRED': return 'secondary';
-      default: return '';
+    switch (status) {
+      case 'PENDING':
+        return 'warn';
+      case 'APPROVED':
+        return 'primary';
+      case 'REJECTED':
+        return 'accent';
+      case 'REVISION_REQUIRED':
+        return 'secondary';
+      default:
+        return '';
     }
   }
 }

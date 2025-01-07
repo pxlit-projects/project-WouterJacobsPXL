@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.reviewService.getNumberOfPendingReviews();
   }
+
   loginService: LoginService = inject(LoginService);
   reviewService: ReviewService = inject(ReviewService);
 }

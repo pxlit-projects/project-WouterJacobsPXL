@@ -16,9 +16,9 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-  .mat-row {
-    border-bottom: 1px solid #f1f1f1;
-  }
+    .mat-row {
+      border-bottom: 1px solid #f1f1f1;
+    }
   }
 
   .post-title {
@@ -52,19 +52,23 @@
       background-color: #4caf50;
       color: white;
     }
+
     &.mat-accent {
       background-color: #ff5722;
       color: white;
     }
+
     &.mat-warn {
       background-color: #ff9800;
       color: white;
     }
+
     &.mat-secondary {
       background-color: #9c27b0;
       color: white;
     }
   }
+
   .mat-column-title {
     flex: 2 0 auto;
     width: 5%;

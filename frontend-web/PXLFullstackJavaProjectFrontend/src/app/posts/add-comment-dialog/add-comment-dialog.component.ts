@@ -1,4 +1,4 @@
-import {Component, Inject, Optional} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -16,6 +16,7 @@ export class AddCommentDialogComponent {
   userName = '';
   content = '';
   isEditing = false;
+
   constructor(
     private dialogRef: MatDialogRef<AddCommentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -24,7 +25,7 @@ export class AddCommentDialogComponent {
       this.userName = data.userName;
       this.content = data.content;
       this.isEditing = true;
-    }else if(localStorage.getItem("userName") != null){
+    } else if (localStorage.getItem("userName") != null) {
       this.userName = (localStorage.getItem("userName") || "").toString();
     }
   }

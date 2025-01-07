@@ -1,7 +1,7 @@
 export class Author {
-  private _id:number;
-  private _firstName:string;
-  private _lastName:string;
+  private _id: number;
+  private _firstName: string;
+  private _lastName: string;
 
 
   constructor(id: number, firstName: string, lastName: string) {

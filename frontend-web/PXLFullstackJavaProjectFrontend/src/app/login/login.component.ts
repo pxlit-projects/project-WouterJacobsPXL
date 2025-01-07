@@ -26,11 +26,11 @@ import {MatButton} from "@angular/material/button";
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   loginError: string = '';
   fb: FormBuilder = inject(FormBuilder);
-  loginService:LoginService = inject(LoginService);
-  router:Router = inject(Router);
+  loginService: LoginService = inject(LoginService);
+  router: Router = inject(Router);
   loginForm: FormGroup = this.fb.group({
     username: ['', [
       Validators.required,
@@ -60,12 +60,12 @@ export class LoginComponent implements OnInit{
     this.loginForm.markAllAsTouched();
 
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
+      const {username, password} = this.loginForm.value;
 
       const validCredentials = this.loginService.login(username, password);
 
       if (validCredentials) {
-        this.router.navigate(['/posts']); //TODO ask dries
+        this.router.navigate(['/posts']);
       } else {
         this.loginError = 'Invalid username or password';
         this.loginForm.get('password')?.reset();

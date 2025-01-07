@@ -12,7 +12,7 @@ describe('LoginService', () => {
   });
 
   it('should login successfully for author role', () => {
-    spyOn(localStorage, 'setItem'); // Mock localStorage.setItem
+    spyOn(localStorage, 'setItem');
 
     const result = service.login('Author', 'password');
 
@@ -24,7 +24,7 @@ describe('LoginService', () => {
   });
 
   it('should login successfully for user role', () => {
-    spyOn(localStorage, 'setItem'); // Mock localStorage.setItem
+    spyOn(localStorage, 'setItem');
 
     const result = service.login('User', 'password');
 

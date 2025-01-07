@@ -13,5 +13,4 @@ import {PostcardListComponent} from "./posts/postcard-list/postcard-list.compone
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-
 }

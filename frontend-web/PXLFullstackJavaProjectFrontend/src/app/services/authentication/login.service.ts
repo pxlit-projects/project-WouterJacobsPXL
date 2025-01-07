@@ -11,10 +11,10 @@ interface Credentials {
 })
 export class LoginService {
   private validCredentials: Credentials[] = [
-    { username: 'Author', password: 'password', role: 'author' },
-    { username: 'User', password: 'password', role: 'user' },
-    { username: 'JanDeMan', password: 'password', role: 'user' },
-    { username: 'KarelDeParel', password: 'password', role: 'user' }
+    {username: 'Author', password: 'password', role: 'author'},
+    {username: 'User', password: 'password', role: 'user'},
+    {username: 'JanDeMan', password: 'password', role: 'user'},
+    {username: 'KarelDeParel', password: 'password', role: 'user'}
 
   ];
   isAuthor = signal(false)
@@ -37,8 +37,7 @@ export class LoginService {
         this.isAuthor.set(true)
       }
       return true;
-    }
-      else {
+    } else {
       return false
     }
   }

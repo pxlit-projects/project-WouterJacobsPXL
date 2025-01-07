@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavbarComponent } from './navbar.component';
-import { LoginService } from '../services/authentication/login.service';
-import { ReviewService } from '../services/review-service/review.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatBadgeModule } from '@angular/material/badge';
-import { RouterModule } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {NavbarComponent} from './navbar.component';
+import {LoginService} from '../services/authentication/login.service';
+import {ReviewService} from '../services/review-service/review.service';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatBadgeModule} from '@angular/material/badge';
+import {RouterModule} from '@angular/router';
+import {of} from 'rxjs';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -28,8 +28,8 @@ describe('NavbarComponent', () => {
         RouterModule.forRoot([]),
       ],
       providers: [
-        { provide: LoginService, useValue: mockLoginService },
-        { provide: ReviewService, useValue: mockReviewService },
+        {provide: LoginService, useValue: mockLoginService},
+        {provide: ReviewService, useValue: mockReviewService},
       ]
     }).compileComponents();
 
@@ -42,7 +42,7 @@ describe('NavbarComponent', () => {
   });
 
   it('should display "Home" and "Login" buttons', () => {
-    mockLoginService.isAuthor.and.returnValue(false); // Mock for non-author user
+    mockLoginService.isAuthor.and.returnValue(false);
     fixture.detectChanges();
 
     const homeButton = fixture.nativeElement.querySelector('.homeButton');
@@ -53,7 +53,7 @@ describe('NavbarComponent', () => {
 
   it('should display "Create New Post" and "Reviews" buttons when the user is an author', () => {
     mockLoginService.isAuthor.and.returnValue(true);
-    mockReviewService.numberOfReviews.and.returnValue(5); // Simulate 5 reviews
+    mockReviewService.numberOfReviews.and.returnValue(5);
     fixture.detectChanges();
 
     const createPostButton = fixture.nativeElement.querySelector('button[routerLink="/posts/new"]');
@@ -63,7 +63,7 @@ describe('NavbarComponent', () => {
     expect(createPostButton).toBeTruthy();
     expect(reviewsButton).toBeTruthy();
     expect(reviewsBadge).toBeTruthy();
-    expect(reviewsBadge.textContent).toBe(" reviews "+ 5); // Ensure only the number is checked
+    expect(reviewsBadge.textContent).toBe(" reviews " + 5);
   });
 
   it('should not display "Create New Post" and "Reviews" buttons when the user is not an author', () => {
@@ -79,7 +79,7 @@ describe('NavbarComponent', () => {
 
   it('should display "Reviews" button with correct badge count', () => {
     mockLoginService.isAuthor.and.returnValue(true);
-    mockReviewService.numberOfReviews.and.returnValue(10); // Simulate 10 reviews
+    mockReviewService.numberOfReviews.and.returnValue(10);
     fixture.detectChanges();
 
     const reviewsButton = fixture.nativeElement.querySelector('button[routerLink="posts/reviews"]');
@@ -87,6 +87,6 @@ describe('NavbarComponent', () => {
 
     expect(reviewsButton).toBeTruthy();
     expect(reviewsBadge).toBeTruthy();
-    expect(reviewsBadge.textContent).toBe(" reviews "+ 10);  // Ensure only the number is checked
+    expect(reviewsBadge.textContent).toBe(" reviews " + 10);
   });
 });

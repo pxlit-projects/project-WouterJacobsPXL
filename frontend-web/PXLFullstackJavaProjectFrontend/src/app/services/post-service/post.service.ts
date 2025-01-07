@@ -13,7 +13,8 @@ export class PostService {
 
   reviewService: ReviewService = inject(ReviewService);
 
-  constructor() { }
+  constructor() {
+  }
 
   getAllPosts(): Observable<Post[]> {
     return from(axios.get(this.API_URL)).pipe(
@@ -37,7 +38,6 @@ export class PostService {
           );
         });
       })
-      //TODO add error handling
     );
   }
 
@@ -81,6 +81,7 @@ export class PostService {
       })
     );
   }
+
   createConcept(postData: any): Observable<any> {
     return from(axios.post(this.API_URL + "/concepts", postData)).pipe(
       map(response => response.data),

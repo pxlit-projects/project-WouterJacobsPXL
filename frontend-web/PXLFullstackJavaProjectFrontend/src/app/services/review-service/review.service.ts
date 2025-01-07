@@ -1,5 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {async, Observable} from 'rxjs';
 import axios from "axios";
 

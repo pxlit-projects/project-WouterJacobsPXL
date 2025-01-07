@@ -35,14 +35,10 @@ export class PostComponent implements OnInit {
   error: string = '';
   loginService: LoginService = inject(LoginService);
   commentService: CommentService = inject(CommentService);
-  //TODO fix this bug, does not work when hard coded comments are removed
   comments: BlogComment[] = []
-
-  constructor(
-    private route: ActivatedRoute,
-    private postService: PostService,
-    private dialog: MatDialog
-  ) {}
+  route:ActivatedRoute = inject(ActivatedRoute);
+  postService: PostService = inject(PostService);
+  dialog: MatDialog = inject(MatDialog);
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -104,22 +100,24 @@ export class PostComponent implements OnInit {
     });
   }
 
-  editComment(comment: any, index: number): void {
+  editComment(comment: any, commentId: number): void {
     const dialogRef = this.dialog.open(AddCommentDialogComponent, {
       width: '400px',
-      data: { content: comment.content,
-              userName: comment.userName}, // Send existing content to the dialog
+      data: {
+        content: comment.content,
+        userName: comment.userName
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.content) {
-        this.commentService.editComment(comment.id, comment.userName, result.content).subscribe({
+        this.commentService.editComment(commentId, comment.userName, result.content).subscribe({
           next: (updatedComment) => {
-            this.comments[index] = {
-              ...this.comments[index],
-              content: updatedComment.content, // Update the content only
-              updatedAt: new Date(updatedComment.updatedAt), // Update timestamp
-            };
+            const commentToUpdate = this.comments.find(c => c.id === commentId);
+            if (commentToUpdate) {
+              commentToUpdate.content = updatedComment.content;
+              commentToUpdate.updatedAt = new Date(updatedComment.updatedAt);
+            }
           },
           error: (error) => {
             console.error('Error editing comment:', error);
@@ -129,6 +127,7 @@ export class PostComponent implements OnInit {
       }
     });
   }
+
 
   deleteComment(commentId: number): void {
     const confirmDelete = confirm('Are you sure you want to delete this comment?');
@@ -156,9 +155,9 @@ export class PostComponent implements OnInit {
         this.comments = []; // Fallback to an empty comments array
       }
     });
-}
+  }
 
   getLoggedInUser(): string {
-    return(localStorage.getItem("userName") || "").toString();
+    return (localStorage.getItem("userName") || "").toString();
   }
 }

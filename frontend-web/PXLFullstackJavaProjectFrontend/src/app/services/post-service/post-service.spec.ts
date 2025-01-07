@@ -28,8 +28,6 @@ describe('PostService', () => {
     reviewService = TestBed.inject(ReviewService);
   });
 
-  // Previous tests remain the same...
-
   describe('getPostById', () => {
     it('should fetch a post by id', (done: DoneFn) => {
       spyOn(axios, 'get').and.returnValue(Promise.resolve({ data: post1 }));
@@ -154,7 +152,7 @@ describe('PostService', () => {
         imageUrl: 'image1.jpg',
         category: 'Test',
         author: {
-          id: authorId,  // matching the authorId we're filtering for
+          id: authorId,
           firstName: 'John',
           lastName: 'Doe'
         }
@@ -168,7 +166,7 @@ describe('PostService', () => {
         imageUrl: 'image2.jpg',
         category: 'Test',
         author: {
-          id: authorId,  // matching the authorId we're filtering for
+          id: authorId,
           firstName: 'John',
           lastName: 'Doe'
         }
@@ -182,7 +180,7 @@ describe('PostService', () => {
         imageUrl: 'image3.jpg',
         category: 'Test',
         author: {
-          id: 999,  // different authorId that should be filtered out
+          id: 999,
           firstName: 'Jane',
           lastName: 'Smith'
         }
@@ -194,7 +192,6 @@ describe('PostService', () => {
 
       service.getConceptsByAuthorId(authorId).subscribe({
         next: (posts) => {
-          // Should only get 2 posts since the third has a different author ID
           expect(posts.length).toBe(2);
           expect(posts[0].author.id).toBe(authorId);
           expect(posts[1].author.id).toBe(authorId);

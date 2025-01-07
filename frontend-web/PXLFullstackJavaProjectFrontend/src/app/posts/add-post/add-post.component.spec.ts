@@ -106,10 +106,8 @@ describe('AddPostComponent', () => {
       'Test lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlolorem ipsumlorem ipsumlorem ipsumrem ipsumContent'
       , 'Test Plorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumreview', 'https://test.jpg', 'Test Category', author);
 
-    // Mock the service response with EMPTY to complete immediately
     mockPostService.createConcept.and.returnValue(EMPTY);
 
-    // Set valid form values
     component.postForm.patchValue({
       title: mockPost.title,
       content: mockPost.content,
@@ -119,10 +117,8 @@ describe('AddPostComponent', () => {
       authorId: mockPost.author.id
     });
 
-    // Call the method
     component.onSaveAsConceptClick();
 
-    // Verify service call immediately
     expect(mockPostService.createConcept).toHaveBeenCalledWith({
       ...component.postForm.value,
       authorId: Number(mockPost.author.id),
@@ -130,7 +126,7 @@ describe('AddPostComponent', () => {
       id: null
     });
 
-    discardPeriodicTasks(); // Clean up any remaining async tasks
+    discardPeriodicTasks();
   }));
 
 
@@ -141,7 +137,6 @@ describe('AddPostComponent', () => {
       'Test lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlolorem ipsumlorem ipsumlorem ipsumrem ipsumContent'
       , 'Test Plorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumreview', 'https://test.jpg', 'Test Category', author);
 
-    // Set valid form values
     component.postForm.patchValue({
       title: mockPost.title,
       content: mockPost.content,
@@ -155,7 +150,6 @@ describe('AddPostComponent', () => {
 
     component.onSubmit();
 
-    // Verify the service call with the correct data structure
     expect(mockPostService.createPost).toHaveBeenCalledWith({
       title: mockPost.title,
       content: mockPost.content,
@@ -174,7 +168,6 @@ describe('AddPostComponent', () => {
       'Test lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlolorem ipsumlorem ipsumlorem ipsumrem ipsumContent'
       , 'Test Plorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumreview', 'https://test.jpg', 'Test Category', author);
 
-    // Set valid form values
     component.postForm.patchValue({
       title: mockPost.title,
       content: mockPost.content,

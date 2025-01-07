@@ -68,9 +68,11 @@
   <mat-divider class="content-divider"></mat-divider>
   <section class="comments-section">
     <h3 class="comments-title">Comments</h3>
-    <p *ngIf="!comments?.length">No comments yet. Be the first to comment!</p>
-    <!-- List of comments -->
-    <div class="comment-card" *ngFor="let comment of comments; let i = index">
+    @if (!comments?.length) {
+      <p>No comments yet. Be the first to comment!</p>
+    }
+    <div class="comment-card" >
+    @for (comment of comments; track comment.id) {
       <mat-card class="comment">
         <mat-card-header>
           <mat-card-title class="comment-user">{{ comment.userName }}</mat-card-title>
@@ -81,7 +83,7 @@
         </mat-card-content>
         @if (getLoggedInUser() === comment.userName) {
           <mat-card-actions align="end" class="comment-actions">
-            <button mat-button color="accent" (click)="editComment(comment, i)">
+            <button mat-button color="accent" (click)="editComment(comment, comment.id)">
               <mat-icon>edit</mat-icon>
               Edit
             </button>
@@ -92,9 +94,9 @@
           </mat-card-actions>
         }
       </mat-card>
+    }
     </div>
 
-    <!-- Add comment button -->
     <button mat-raised-button color="primary" class="add-comment-button" (click)="openAddCommentDialog()">
       <mat-icon>add_comment</mat-icon>
       Add Comment

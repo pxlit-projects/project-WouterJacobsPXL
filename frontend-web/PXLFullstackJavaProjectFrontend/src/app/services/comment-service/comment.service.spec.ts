@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CommentService } from './comment.service';
 import axios from 'axios';
-import { of } from 'rxjs';
 
 describe('CommentService', () => {
   let service: CommentService;

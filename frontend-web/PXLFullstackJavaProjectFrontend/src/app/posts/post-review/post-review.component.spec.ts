@@ -15,7 +15,6 @@ describe('PostReviewComponent', () => {
   let fixture: ComponentFixture<PostReviewComponent>;
   let mockReviewService: jasmine.SpyObj<ReviewService>;
 
-  // Mock PostInReviewDto object
   const mockPostData: PostInReviewDto = {
     title: 'Test Post',
     imageUrl: 'https://example.com/image.jpg',
@@ -33,7 +32,6 @@ describe('PostReviewComponent', () => {
     mockReviewService = jasmine.createSpyObj('ReviewService', ['getAllReviews']);
 
     const mockedposts: PostInReviewDto[] = [mockPostData];
-    // Simulating the behavior of the service method to return mock data
     mockReviewService.getAllReviews.and.returnValue(Promise.resolve(mockedposts));
 
     await TestBed.configureTestingModule({
@@ -47,18 +45,15 @@ describe('PostReviewComponent', () => {
 
     fixture = TestBed.createComponent(PostReviewComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges(); // Trigger initial change detection
+    fixture.detectChanges();
   });
 
   it('should create the component and load reviews', () => {
-    // Check if component is created
     expect(component).toBeTruthy();
 
-    // Check if the reviews are loaded into the dataSource
     expect(component.dataSource.data.length).toBeGreaterThan(0);
     expect(component.dataSource.data[0]).toEqual(mockPostData);
 
-    // Verify that the service method was called once to fetch reviews
     expect(mockReviewService.getAllReviews).toHaveBeenCalledTimes(1);
   });
 

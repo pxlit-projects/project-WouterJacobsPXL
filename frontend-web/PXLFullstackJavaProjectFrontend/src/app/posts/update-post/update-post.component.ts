@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import {Component, inject, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
 
-import { PostService } from '../../services/post-service/post.service';
-import { Post } from '../../models/post.model';
+import {PostService} from '../../services/post-service/post.service';
+import {Post} from '../../models/post.model';
 import {LoginService} from "../../services/authentication/login.service";
 
 @Component({
@@ -32,15 +32,14 @@ export class UpdatePostComponent implements OnInit {
   post?: Post;
   loading = true;
   error = '';
+  fb: FormBuilder = inject(FormBuilder);
+  postService: PostService = inject(PostService);
+  route: ActivatedRoute = inject(ActivatedRoute);
+  router: Router = inject(Router);
+  loginService: LoginService = inject(LoginService);
+  snackBar: MatSnackBar = inject(MatSnackBar);
 
-  constructor(
-    private fb: FormBuilder,
-    private postService: PostService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private loginService: LoginService,
-    private snackBar: MatSnackBar
-  ) {
+  constructor() {
     this.postForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       previewContent: ['', [Validators.required, Validators.maxLength(300)]],
@@ -50,14 +49,12 @@ export class UpdatePostComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Check if user is an author
     if (!this.loginService.isAuthor().valueOf()) {
-      this.snackBar.open('Only authors can edit posts', 'Close', { duration: 3000 });
+      this.snackBar.open('Only authors can edit posts', 'Close', {duration: 3000});
       this.router.navigate(['/posts']);
       return;
     }
 
-    // Get post ID from route and fetch post details
     this.route.params.subscribe(params => {
       const postId = +params['id'];
       this.fetchPostDetails(postId);
@@ -74,7 +71,7 @@ export class UpdatePostComponent implements OnInit {
       error: () => {
         this.error = 'Failed to load post details';
         this.loading = false;
-        this.snackBar.open(this.error, 'Close', { duration: 3000 });
+        this.snackBar.open(this.error, 'Close', {duration: 3000});
       }
     });
   }
@@ -95,7 +92,7 @@ export class UpdatePostComponent implements OnInit {
     }
 
     if (!this.post) {
-      this.snackBar.open('No post selected for update', 'Close', { duration: 3000 });
+      this.snackBar.open('No post selected for update', 'Close', {duration: 3000});
       return;
     }
     const postData = this.postForm.value;
@@ -107,11 +104,11 @@ export class UpdatePostComponent implements OnInit {
 
     this.postService.updatePost(postData).subscribe({
       next: () => {
-        this.snackBar.open('Post updated successfully', 'Close', { duration: 3000 });
+        this.snackBar.open('Post updated successfully', 'Close', {duration: 3000});
         this.router.navigate(['/posts', this.post?.id]);
       },
       error: (error) => {
-        this.snackBar.open('Failed to update post', 'Close', { duration: 3000 });
+        this.snackBar.open('Failed to update post', 'Close', {duration: 3000});
         console.error('Update post error:', error);
       }
     });

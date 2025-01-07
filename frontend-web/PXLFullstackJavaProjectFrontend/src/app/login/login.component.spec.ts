@@ -1,13 +1,13 @@
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { LoginService } from '../services/authentication/login.service';
-import { LoginComponent } from './login.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
+import {Router} from '@angular/router';
+import {ReactiveFormsModule} from '@angular/forms';
+import {LoginService} from '../services/authentication/login.service';
+import {LoginComponent} from './login.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -16,7 +16,10 @@ describe('LoginComponent', () => {
   let mockRouter: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    mockLoginService = jasmine.createSpyObj('LoginService', ['login'], { isAuthor: { set: jasmine.createSpy() }, isUser: { set: jasmine.createSpy() } });
+    mockLoginService = jasmine.createSpyObj('LoginService', ['login'], {
+      isAuthor: {set: jasmine.createSpy()},
+      isUser: {set: jasmine.createSpy()}
+    });
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
@@ -29,8 +32,8 @@ describe('LoginComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
-        { provide: LoginService, useValue: mockLoginService },
-        { provide: Router, useValue: mockRouter },
+        {provide: LoginService, useValue: mockLoginService},
+        {provide: Router, useValue: mockRouter},
       ],
     }).compileComponents();
 
@@ -44,7 +47,7 @@ describe('LoginComponent', () => {
   });
 
   it('should initialize the form with empty fields', () => {
-    expect(component.loginForm.value).toEqual({ username: '', password: '' });
+    expect(component.loginForm.value).toEqual({username: '', password: ''});
   });
 
   it('should show validation errors when form is invalid and submitted', () => {
@@ -57,42 +60,36 @@ describe('LoginComponent', () => {
   });
 
   it('should reset password field and show error message on invalid login', fakeAsync(() => {
-    component.loginForm.setValue({ username: 'user1', password: 'wrongpass' });
+    component.loginForm.setValue({username: 'user1', password: 'wrongpass'});
     mockLoginService.login.and.returnValue(false); // Simulate failed login
 
     component.onSubmit();
-    tick(); // Wait for any asynchronous code to complete
+    tick();
     fixture.detectChanges();
 
-    // Assert error message and password reset
     expect(component.loginError).toBe('Invalid username or password');
-    expect(component.loginForm.get('password')?.value).toBe(null); // Reset password field to empty string
+    expect(component.loginForm.get('password')?.value).toBe(null);
     const errorElement = fixture.nativeElement.querySelector('.login-error');
     expect(errorElement).toBeTruthy();
     expect(errorElement.textContent.trim()).toBe('Invalid username or password');
-
-    // Ensure no pending timers
-    tick(); // Add another tick to clear remaining timers
+    tick();
   }));
 
 
   it('should navigate to /posts on valid login', fakeAsync(() => {
-    // Arrange
     component.loginForm.controls['username'].setValue('validUser');
     component.loginForm.controls['password'].setValue('validPassword');
     mockLoginService.login.and.returnValue(true); // Simulate valid login
     fixture.detectChanges();
 
-    // Act
     component.onSubmit();
-    tick(); // Wait for async operations to finish
+    tick();
 
-    // Assert
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/posts']); // Check if navigation occurs
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/posts']);
   }));
 
   it('should disable the login button when form is invalid', () => {
-    component.loginForm.setValue({ username: '', password: '' });
+    component.loginForm.setValue({username: '', password: ''});
     fixture.detectChanges();
 
     const button = fixture.nativeElement.querySelector('button[type="submit"]');
@@ -100,7 +97,7 @@ describe('LoginComponent', () => {
   });
 
   it('should enable the login button when form is valid', () => {
-    component.loginForm.setValue({ username: 'user1', password: 'correctpass' });
+    component.loginForm.setValue({username: 'user1', password: 'correctpass'});
     fixture.detectChanges();
 
     const button = fixture.nativeElement.querySelector('button[type="submit"]');

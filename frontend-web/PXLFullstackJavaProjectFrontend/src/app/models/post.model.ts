@@ -8,18 +8,19 @@ export class Post {
   set category(value: string) {
     this._category = value;
   }
-  private _id:number;
-  private _title:string;
-  private _isConcept:boolean;
-  private _content:string;
-  private _previewContent:string;
-  private _imageUrl:string;
-  private _category:string;
-  private _author:Author;
-  private _date:string;
+
+  private _id: number;
+  private _title: string;
+  private _isConcept: boolean;
+  private _content: string;
+  private _previewContent: string;
+  private _imageUrl: string;
+  private _category: string;
+  private _author: Author;
+  private _date: string;
 
 
-  constructor(id: number, title: string, isConcept:boolean,content: string, previewContent: string, imageUrl: string, category:string, author: Author) {
+  constructor(id: number, title: string, isConcept: boolean, content: string, previewContent: string, imageUrl: string, category: string, author: Author) {
     this._id = id;
     this._title = title;
     this._isConcept = isConcept;

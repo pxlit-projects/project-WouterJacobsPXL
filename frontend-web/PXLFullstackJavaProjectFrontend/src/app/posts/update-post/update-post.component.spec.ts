@@ -31,9 +31,8 @@ describe('UpdatePostComponent', () => {
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
 
-    loginServiceSpy.isAuthor.and.returnValue(true);  // Mocking an authorized user
+    loginServiceSpy.isAuthor.and.returnValue(true);
 
-    // Set up the module
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -48,7 +47,7 @@ describe('UpdatePostComponent', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ id: 1 }) }  // Mocked route params
+          useValue: { params: of({ id: 1 }) }
         },
         { provide: PostService, useValue: postServiceSpy },
         { provide: LoginService, useValue: loginServiceSpy },
@@ -67,13 +66,10 @@ describe('UpdatePostComponent', () => {
   });
 
   it('should check if the user is an author when initializing', () => {
-    // Mock the `isAuthor` method to return false
     loginServiceSpy.isAuthor.and.returnValue(false);
 
-    // Trigger ngOnInit by calling the component lifecycle method
     component.ngOnInit();
 
-    // Check that the snack bar is opened and the user is redirected to posts
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/posts']);
   });
 
@@ -81,13 +77,10 @@ describe('UpdatePostComponent', () => {
     const author: Author = new Author(1, "John", "Doe");
     const mockPost: Post = new Post(1, 'Test Post', false, 'Test Content', 'Test Preview', 'https://test.jpg', 'Test Category', author);
 
-    // Set up the mock response for getting post by ID
     postServiceSpy.getPostById.and.returnValue(of(mockPost));
 
-    // Trigger ngOnInit by calling the component lifecycle method
     component.ngOnInit();
 
-    // Verify the post is fetched and the form is populated
     expect(postServiceSpy.getPostById).toHaveBeenCalledWith(1);
     expect(component.post).toEqual(mockPost);
     expect(component.postForm.value.title).toEqual(mockPost.title);
@@ -96,13 +89,10 @@ describe('UpdatePostComponent', () => {
   });
 
   it('should handle error when fetching post details fails', () => {
-    // Directly pass the post ID for testing
     postServiceSpy.getPostById.and.returnValue(throwError('Failed to fetch post'));
 
-    // Trigger ngOnInit by calling the component lifecycle method
     component.ngOnInit();
 
-    // Verify that error message is set and snackbar is opened
     expect(component.error).toBe('Failed to load post details');
   });
 
@@ -110,7 +100,6 @@ describe('UpdatePostComponent', () => {
     const author: Author = new Author(1, "John", "Doe");
     const mockPost: Post = new Post(1, 'Test Post', false, 'Test Content', 'Test Preview', 'https://test.jpg', 'Test Category', author);
 
-    // Initialize component with mock post data
     component.post = mockPost;
     component.postForm.setValue({
       title: 'Updated Post',
@@ -119,13 +108,10 @@ describe('UpdatePostComponent', () => {
       category: 'Updated Category'
     });
 
-    // Simulate successful post update response
     postServiceSpy.updatePost.and.returnValue(of(null));
 
-    // Trigger form submission
     component.onSubmit();
 
-    // Verify that the update service method is called with the expected post data
     expect(postServiceSpy.updatePost).toHaveBeenCalledWith({
       ...component.postForm.value,
       id: mockPost.id,
@@ -134,7 +120,6 @@ describe('UpdatePostComponent', () => {
       imageUrl: mockPost.imageUrl
     });
 
-    // Verify that success snack bar is opened and router navigates
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/posts', mockPost.id]);
   });
 
@@ -143,10 +128,8 @@ describe('UpdatePostComponent', () => {
     const mockPost: Post = new Post(1, 'Test Post', false, 'Test Content', 'Test Preview', 'https://test.jpg', 'Test Category', author);
     component.post = mockPost;
 
-    // Simulate cancelling the update
     component.cancelUpdate();
 
-    // Verify that the router navigates to the post page
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/posts', mockPost.id]);
   });
 });

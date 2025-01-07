@@ -44,7 +44,7 @@ describe('PostComponent', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ id: 1 }) }
+          useValue: {params: of({id: 1})}
         },
         { provide: PostService, useValue: postServiceSpy },
         { provide: LoginService, useValue: loginServiceSpy },
@@ -57,11 +57,9 @@ describe('PostComponent', () => {
     loginService = TestBed.inject(LoginService) as jasmine.SpyObj<LoginService>;
     mockDialog = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
 
-    // Initialize spies
     postService.getPostById.and.returnValue(of(mockPost));
     loginService.isAuthor.and.returnValue(true);
 
-    // Create fixture and component
     fixture = TestBed.createComponent(PostComponent);
     component = fixture.componentInstance;
   });
@@ -99,20 +97,14 @@ describe('PostComponent', () => {
   }));
 
   it('should show edit button when user is author', fakeAsync(() => {
-    // Mock the isAuthor method
     loginService.isAuthor.and.returnValue(true);
 
-    // Trigger change detection to reflect the new state
     fixture.detectChanges();
-    tick(); // Process any asynchronous changes
+    tick();
 
-    // Check for the edit button
     const editButton = fixture.nativeElement.querySelector('.editButton');
-    expect(editButton).toBeTruthy(); // Assert the button is in the DOM
+    expect(editButton).toBeTruthy();
   }));
-
-
-
 
   it('should not show edit button when user is not author', fakeAsync(() => {
     loginService.isAuthor.and.returnValue(false);

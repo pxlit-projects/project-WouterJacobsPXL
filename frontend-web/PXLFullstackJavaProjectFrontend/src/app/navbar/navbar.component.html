@@ -1,17 +1,18 @@
-<mat-toolbar  class="navbar" >
+<mat-toolbar class="navbar">
   <span>PXL News Site</span>
   <div class="spacer"></div>
   <button class="homeButton" mat-button [routerLink]="['']">Home</button>
-  @if(loginService.isAuthor().valueOf()){
+  @if (loginService.isAuthor().valueOf()) {
     <button mat-raised-button color="primary" routerLink="/posts/new">
       <mat-icon>post_add</mat-icon>
       Create New Post
     </button>
     <button mat-button routerLink="posts/reviews" class="reviews-button">
-      <mat-icon [matBadge]="reviewService.numberOfReviews().valueOf()" matBadgeColor="accent" matBadgeOverlap="false" matBadgePosition="above after">
+      <mat-icon [matBadge]="reviewService.numberOfReviews().valueOf()" matBadgeColor="accent" matBadgeOverlap="false"
+                matBadgePosition="above after">
         reviews
       </mat-icon>
     </button>
   }
-  <button class="loginButton" mat-button  routerLink="/login">Login</button>
+  <button class="loginButton" mat-button routerLink="/login">Login</button>
 </mat-toolbar>

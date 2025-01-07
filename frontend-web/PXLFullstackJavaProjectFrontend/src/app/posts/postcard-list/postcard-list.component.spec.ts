@@ -15,7 +15,6 @@ describe('PostcardListComponent', () => {
   let fixture: ComponentFixture<PostcardListComponent>;
   let postService: jasmine.SpyObj<PostService>;
 
-  // Define mock data for posts
   let author: Author = new Author(1, "John", "Doe");
   let author2: Author = new Author(1, "Johny", "Doe");
   const mockPosts: Post[] = [
@@ -27,82 +26,69 @@ describe('PostcardListComponent', () => {
   beforeEach(async () => {
     // Create a spy object for the PostService
     postService = jasmine.createSpyObj('PostService', ['getAllPosts']);
-    postService.getAllPosts.and.returnValue(of(mockPosts)); // Return mock data when getAllPosts is called
+    postService.getAllPosts.and.returnValue(of(mockPosts));
 
     await TestBed.configureTestingModule({
-      imports: [MatCardModule, MatButtonModule, FormsModule, BrowserAnimationsModule], // Import required Angular Material modules
+      imports: [MatCardModule, MatButtonModule, FormsModule, BrowserAnimationsModule],
       providers: [
-        { provide: PostService, useValue: postService }, // Provide the mock PostService
+        { provide: PostService, useValue: postService },
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PostcardListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges(); // Trigger initial change detection
+    fixture.detectChanges();
   });
 
   it('should create the component and initialize posts correctly', () => {
-    // Check if the component is created
     expect(component).toBeTruthy();
 
-    // Ensure that posts are loaded correctly from the mock service
     expect(component.posts.length).toBe(3);
-    expect(component.filteredPosts.length).toBe(3); // Initially, filteredPosts should match posts
+    expect(component.filteredPosts.length).toBe(3);
   });
 
   it('should apply filters correctly based on author name', () => {
-    component.authorFilter = 'John Doe'; // Filter by 'John Doe'
+    component.authorFilter = 'John Doe';
 
-    // Call applyFilters to apply the filter
     component.applyFilters();
 
-    // There should be two posts by John Doe
     expect(component.filteredPosts.length).toBe(2);
 
-    // Ensure that the filtered posts match the expected results
     expect(component.filteredPosts[0].author.firstName).toBe('John');
     expect(component.filteredPosts[1].author.firstName).toBe('John');
   });
 
   it('should apply filters correctly based on category', () => {
-    component.categoryFilter = 'Category A'; // Filter by 'Category A'
+    component.categoryFilter = 'Category A';
 
-    // Call applyFilters to apply the filter
     component.applyFilters();
 
-    // There should be two posts in Category A
     expect(component.filteredPosts.length).toBe(2);
 
-    // Ensure that the filtered posts match the expected results
     expect(component.filteredPosts[0].category).toBe('Category A');
     expect(component.filteredPosts[1].category).toBe('Category A');
   });
 
   it('should apply filters correctly based on content', () => {
-    component.contentFilter = 'Test Content 1'; // Filter by content
+    component.contentFilter = 'Test Content 1';
 
-    // Call applyFilters to apply the filter
     component.applyFilters();
 
-    // There should be one post with the content 'Test Content 1'
     expect(component.filteredPosts.length).toBe(1);
     expect(component.filteredPosts[0].content).toContain('Test Content 1');
   });
 
   it('should reset filters correctly and show all posts', () => {
-    component.authorFilter = 'John Doe'; // Set some filter
-    component.categoryFilter = 'Category A'; // Set some filter
-    component.contentFilter = 'Test Content 1'; // Set some filter
+    component.authorFilter = 'John Doe';
+    component.categoryFilter = 'Category A';
+    component.contentFilter = 'Test Content 1';
 
-    // Call resetFilters to clear all filters
     component.resetFilters();
 
-    // Ensure that filters are reset to empty strings
     expect(component.authorFilter).toBe('');
     expect(component.categoryFilter).toBe('');
     expect(component.contentFilter).toBe('');
 
-    // Ensure that filteredPosts contains all posts
-    expect(component.filteredPosts.length).toBe(3); // All posts should be visible now
+    expect(component.filteredPosts.length).toBe(3);
   });
 });

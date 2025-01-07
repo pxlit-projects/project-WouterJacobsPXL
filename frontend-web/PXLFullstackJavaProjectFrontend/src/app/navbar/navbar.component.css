@@ -8,8 +8,6 @@
   background-color: #d7e3ff;
 }
 
-
-
 ::ng-deep .mat-mdc-badge-content {
   background-color: red;
   color: white;
