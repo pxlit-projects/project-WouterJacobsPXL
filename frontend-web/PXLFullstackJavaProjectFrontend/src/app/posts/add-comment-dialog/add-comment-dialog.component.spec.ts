@@ -74,16 +74,13 @@ describe('AddCommentDialogComponent', () => {
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
-  it('should update userName and content when inputs are changed', () => {
-    const userNameInput = fixture.debugElement.query(By.css('input[matInput]')).nativeElement;
-    const contentTextarea = fixture.debugElement.query(By.css('textarea[matInput]')).nativeElement;
+  it('should update content when inputs are changed', () => {
+    const contentTextarea = fixture.nativeElement.querySelector('.commentContent');
 
-    userNameInput.value = 'Alice';
-    userNameInput.dispatchEvent(new Event('input'));
     contentTextarea.value = 'Updated comment.';
     contentTextarea.dispatchEvent(new Event('input'));
 
-    expect(component.userName).toBe('Alice');
+    expect(component.userName).toBe('John Doe');
     expect(component.content).toBe('Updated comment.');
   });
 });
