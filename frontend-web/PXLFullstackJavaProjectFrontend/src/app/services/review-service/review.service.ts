@@ -2,6 +2,7 @@ import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {async, Observable} from 'rxjs';
 import axios from "axios";
+import {environment} from "../../../environments/environment";
 
 export interface PostInReviewDto {
   postId: number;
@@ -30,7 +31,7 @@ interface UpdateReviewStatusDto {
   providedIn: 'root'
 })
 export class ReviewService {
-  private apiUrl = "http://localhost:8085/review/api/reviews";
+  private apiUrl = environment.reviewApiUrl
 
   numberOfReviews = signal(0)
 

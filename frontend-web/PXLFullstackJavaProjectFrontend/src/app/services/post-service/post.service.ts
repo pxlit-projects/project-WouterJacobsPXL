@@ -4,12 +4,13 @@ import {Post} from "../../models/post.model";
 import {Author} from "../../models/author";
 import axios from "axios";
 import {ReviewService} from "../review-service/review.service";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  private readonly API_URL = 'http://localhost:8085/post/api/posts';
+  private readonly API_URL= environment.postApiUrl
 
   reviewService: ReviewService = inject(ReviewService);
 

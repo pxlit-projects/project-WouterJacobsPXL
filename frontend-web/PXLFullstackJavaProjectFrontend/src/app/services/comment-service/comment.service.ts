@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {catchError, from, map, Observable, throwError} from "rxjs";
 import axios from "axios";
+import {environment} from "../../../environments/environment";
 export interface Comment {
   id: number;
   postId: number;
@@ -15,8 +16,7 @@ export interface Comment {
 })
 
 export class CommentService {
-  private readonly API_URL = `http://localhost:8085/comment/api/comments`;
-
+  private readonly API_URL = environment.commentApiUrl;
   constructor() { }
 
   getCommentsForPost(postId: number): Observable<Comment[]> {
