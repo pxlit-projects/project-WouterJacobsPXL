@@ -12,6 +12,7 @@ import {LoginService} from "../../services/authentication/login.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AddCommentDialogComponent} from "../add-comment-dialog/add-comment-dialog.component";
 import {CommentService} from "../../services/comment-service/comment.service";
+import {BlogComment} from "../../models/BlogComment";
 
 @Component({
   selector: 'app-post',
@@ -34,34 +35,8 @@ export class PostComponent implements OnInit {
   error: string = '';
   loginService: LoginService = inject(LoginService);
   commentService: CommentService = inject(CommentService);
-
   //TODO fix this bug, does not work when hard coded comments are removed
-  comments = [
-    {
-      id: 1,
-      postId: 101,
-      userName: 'John Doe',
-      content: 'This post is amazing! Thanks for sharing.',
-      createdAt: new Date('2023-10-05T10:30:00'),
-      updatedAt: new Date(),
-    },
-    {
-      id: 2,
-      postId: 101,
-      userName: 'Jane Smith',
-      content: 'Couldn’t agree more! Great insights.',
-      createdAt: new Date('2023-10-06T12:15:00'),
-      updatedAt: new Date(),
-    },
-    {
-      id: 3,
-      postId: 101,
-      userName: 'Samuel Green',
-      content: 'I have a question about the topic covered here.',
-      createdAt: new Date('2023-10-07T14:50:00'),
-      updatedAt: new Date(),
-    },
-  ];
+  comments: BlogComment[] = []
 
   constructor(
     private route: ActivatedRoute,
@@ -182,4 +157,8 @@ export class PostComponent implements OnInit {
       }
     });
 }
+
+  getLoggedInUser(): string {
+    return(localStorage.getItem("userName") || "").toString();
+  }
 }

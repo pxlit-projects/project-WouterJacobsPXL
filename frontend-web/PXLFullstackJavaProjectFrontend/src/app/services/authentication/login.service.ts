@@ -12,7 +12,10 @@ interface Credentials {
 export class LoginService {
   private validCredentials: Credentials[] = [
     { username: 'Author', password: 'password', role: 'author' },
-    { username: 'User', password: 'password', role: 'user' }
+    { username: 'User', password: 'password', role: 'user' },
+    { username: 'JanDeMan', password: 'password', role: 'user' },
+    { username: 'KarelDeParel', password: 'password', role: 'user' }
+
   ];
   isAuthor = signal(false)
   isUser = signal(false)
@@ -25,6 +28,7 @@ export class LoginService {
     if (user) {
       localStorage.setItem('userRole', user.role);
       if (user.role === 'user') {
+        localStorage.setItem('userName', user.username);
         this.isUser.set(true)
       }
       if (user.role === 'author') {

@@ -1,9 +1,9 @@
 <h2 mat-dialog-title>Add a New Comment</h2>
 <mat-dialog-content>
-  <mat-form-field appearance="fill" class="dialog-input">
+  <div class="dialog-input">
     <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="userName" />
-  </mat-form-field>
+    <p class="username-display">{{ userName }}</p>
+  </div>
 
   <mat-form-field appearance="fill" class="dialog-input">
     <mat-label>Comment</mat-label>
@@ -12,5 +12,9 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button color="warn" (click)="cancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="submitComment()">Add Comment</button>
+  @if (isEditing) {
+    <button mat-raised-button color="primary" (click)="submitComment()">Edit Comment</button>
+  } @else {
+    <button mat-raised-button color="primary" (click)="submitComment()">Add Comment</button>
+  }
 </mat-dialog-actions>
