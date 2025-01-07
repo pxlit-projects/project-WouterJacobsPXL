@@ -25,8 +25,8 @@ import {MatLabel} from "@angular/material/form-field";
       </form>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button (click)="onCancel()">Cancel</button>
-      <button mat-raised-button color="warn" [mat-dialog-close]="rejectionReasonForm.value.rejectionReason">
+      <button class="cancelButton" mat-button (click)="onCancel()">Cancel</button>
+      <button class="rejectButton" mat-raised-button color="warn" [mat-dialog-close]="rejectionReasonForm.value.rejectionReason">
         Reject
       </button>
     </mat-dialog-actions>

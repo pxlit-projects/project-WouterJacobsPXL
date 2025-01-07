@@ -54,7 +54,7 @@
           <mat-icon>share</mat-icon> Share
         </button>
         @if(loginService.isAuthor().valueOf()){
-          <button mat-button color="primary" [routerLink]="['/posts', post.id, 'edit']">
+          <button class="editButton" mat-button color="primary" [routerLink]="['/posts', post.id, 'edit']">
             <mat-icon>edit</mat-icon> edit
           </button>
         }
