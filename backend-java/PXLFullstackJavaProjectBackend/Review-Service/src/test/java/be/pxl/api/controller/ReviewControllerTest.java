@@ -1,4 +1,4 @@
-package be.pxl.api;
+package be.pxl.api.controller;
 
 import be.pxl.api.dto.AuthorDto;
 import be.pxl.api.dto.PostInReviewDto;
@@ -11,12 +11,9 @@ import be.pxl.repository.PostReviewRepository;
 import be.pxl.service.ReviewService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,15 +21,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.ArrayList;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -171,5 +166,37 @@ class ReviewControllerTest {
         // Verify repository methods
         verify(postReviewRepository, atMostOnce()).findById(200L);
         verify(postReviewRepository, atMostOnce()).save(mockPostReview);
+    }
+
+    @Test
+    void testLogRequestDetailsException() throws Exception {
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(mockRequest.getMethod()).thenThrow(new RuntimeException("Test Exception"));
+
+        Method logRequestDetailsMethod = ReviewController.class.getDeclaredMethod("logRequestDetails",
+                HttpServletRequest.class, Object.class);
+        logRequestDetailsMethod.setAccessible(true);
+
+        ReviewController controller = new ReviewController(reviewService);
+
+        logRequestDetailsMethod.invoke(controller, mockRequest, "test payload");
+    }
+
+    @Test
+    void testGetClientIpAddress() throws Exception {
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+
+        when(mockRequest.getHeader("X-Forwarded-For")).thenReturn("192.168.1.1, 10.0.0.1");
+        when(mockRequest.getHeader("Proxy-Client-IP")).thenReturn(null);
+        when(mockRequest.getHeader("WL-Proxy-Client-IP")).thenReturn("unknown");
+
+        Method getClientIpAddressMethod = ReviewController.class.getDeclaredMethod("getClientIpAddress", HttpServletRequest.class);
+        getClientIpAddressMethod.setAccessible(true);
+
+        ReviewController controller = new ReviewController(reviewService);
+
+        String ipAddress = (String) getClientIpAddressMethod.invoke(controller, mockRequest);
+
+        assertEquals("192.168.1.1", ipAddress);
     }
 }

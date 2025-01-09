@@ -7,6 +7,7 @@ import be.pxl.domain.Comment;
 import be.pxl.repository.CommentRepository;
 import be.pxl.service.CommentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,12 +24,16 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,6 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CommentControllerTest {
     @Container
     private static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0");
+    @Autowired
+    private CommentService commentService;
 
     @DynamicPropertySource
     static void registerMySQLProperties(DynamicPropertyRegistry registry) {
@@ -138,5 +145,37 @@ class CommentControllerTest {
                 .andExpect(status().isNotFound());
 
         Mockito.verify(commentRepository).findById(100L);
+    }
+
+    @Test
+    void testLogRequestDetailsException() throws Exception {
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(mockRequest.getMethod()).thenThrow(new RuntimeException("Test Exception"));
+
+        Method logRequestDetailsMethod = CommentController.class.getDeclaredMethod("logRequestDetails",
+                HttpServletRequest.class, Object.class);
+        logRequestDetailsMethod.setAccessible(true);
+
+        CommentController controller = new CommentController(commentService);
+
+        logRequestDetailsMethod.invoke(controller, mockRequest, "test payload");
+    }
+
+    @Test
+    void testGetClientIpAddress() throws Exception {
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+
+        when(mockRequest.getHeader("X-Forwarded-For")).thenReturn("192.168.1.1, 10.0.0.1");
+        when(mockRequest.getHeader("Proxy-Client-IP")).thenReturn(null);
+        when(mockRequest.getHeader("WL-Proxy-Client-IP")).thenReturn("unknown");
+
+        Method getClientIpAddressMethod = CommentController.class.getDeclaredMethod("getClientIpAddress", HttpServletRequest.class);
+        getClientIpAddressMethod.setAccessible(true);
+
+        CommentController controller = new CommentController(commentService);
+
+        String ipAddress = (String) getClientIpAddressMethod.invoke(controller, mockRequest);
+
+        assertEquals("192.168.1.1", ipAddress);
     }
 }

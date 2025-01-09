@@ -7,6 +7,7 @@ import be.pxl.domain.Post;
 import be.pxl.repository.PostRepository;
 import be.pxl.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,17 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -40,6 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PostControllerTest {
     @Container
     private static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0");
+    @Autowired
+    private PostService postService;
 
     @DynamicPropertySource
     static void registerMySQLProperties(DynamicPropertyRegistry registry){
@@ -195,5 +200,37 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+    @Test
+    void testLogRequestDetailsException() throws Exception {
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(mockRequest.getMethod()).thenThrow(new RuntimeException("Test Exception"));
+
+        Method logRequestDetailsMethod = PostController.class.getDeclaredMethod("logRequestDetails",
+                HttpServletRequest.class, Object.class);
+        logRequestDetailsMethod.setAccessible(true);
+
+        PostController controller = new PostController(postService);
+
+        logRequestDetailsMethod.invoke(controller, mockRequest, "test payload");
+    }
+
+    @Test
+    void testGetClientIpAddress() throws Exception {
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+
+        when(mockRequest.getHeader("X-Forwarded-For")).thenReturn("192.168.1.1, 10.0.0.1");
+        when(mockRequest.getHeader("Proxy-Client-IP")).thenReturn(null);
+        when(mockRequest.getHeader("WL-Proxy-Client-IP")).thenReturn("unknown");
+
+        Method getClientIpAddressMethod = PostController.class.getDeclaredMethod("getClientIpAddress", HttpServletRequest.class);
+        getClientIpAddressMethod.setAccessible(true);
+
+        PostController controller = new PostController(postService);
+
+        String ipAddress = (String) getClientIpAddressMethod.invoke(controller, mockRequest);
+
+        assertEquals("192.168.1.1", ipAddress);
     }
 }

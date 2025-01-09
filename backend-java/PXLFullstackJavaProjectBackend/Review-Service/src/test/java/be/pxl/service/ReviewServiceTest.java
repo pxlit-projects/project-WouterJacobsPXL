@@ -9,6 +9,7 @@ import be.pxl.domain.PostReview;
 import be.pxl.domain.ReviewStatus;
 import be.pxl.exception.PostReviewNotFoundException;
 import be.pxl.repository.PostReviewRepository;
+import feign.FeignException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -242,5 +243,28 @@ class ReviewServiceTest {
         verify(postReviewRepository).findById(1L);
         verifyNoMoreInteractions(postReviewRepository);  // Should not save for PENDING status
         verify(postClient).approvePost(100L);  // Should still call approvePost because status is APPROVED
+    }
+
+    @Test
+    void whenPostServiceIsUnavailable_ShouldThrowFeignException(){
+        PostReview existingReview = PostReview.builder()
+                .id(1L)
+                .postId(100L)
+                .reviewStatus(ReviewStatus.APPROVED)
+                .build();
+
+        PostInReviewRequestDto requestDto = PostInReviewRequestDto.builder()
+                .reviewPostId(1L)
+                .reviewStatus(ReviewStatus.PENDING)
+                .build();
+
+        when(postReviewRepository.findById(1L)).thenReturn(Optional.of(existingReview));
+
+        when(postClient.getPostsInReview()).thenThrow(FeignException.class);
+        doThrow(FeignException.class).when(postClient).approvePost(anyLong());
+
+
+        assertThrows(FeignException.class,() -> reviewService.getAllPostsInReview());
+        assertThrows(FeignException.class,() -> reviewService.updateStatusOfReview(requestDto));
     }
 }

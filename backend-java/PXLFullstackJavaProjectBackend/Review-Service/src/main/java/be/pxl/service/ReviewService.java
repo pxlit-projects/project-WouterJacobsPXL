@@ -8,6 +8,7 @@ import be.pxl.domain.PostReview;
 import be.pxl.domain.ReviewStatus;
 import be.pxl.exception.PostReviewNotFoundException;
 import be.pxl.repository.PostReviewRepository;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,10 @@ public class ReviewService {
 
             logger.info("Returning {} posts in review", postsInReview.size());
             return postsInReview;
-        } catch (Exception e) {
+        } catch (FeignException e) {
+            logger.warn("External post service is unavailable. Working with existing database records only", e);
+            throw e;
+        }catch (Exception e) {
             logger.error("Error retrieving posts in review", e);
             throw e;
         }
@@ -107,11 +111,16 @@ public class ReviewService {
 
             postReviewRepository.save(postReview);
         }
-
-        if (postReview.getReviewStatus().equals(ReviewStatus.APPROVED)) {
-            logger.info("Approving post: postId={}", postReview.getPostId());
-            postClient.approvePost(postReview.getPostId());
+        try {
+            if (postReview.getReviewStatus().equals(ReviewStatus.APPROVED)) {
+                logger.info("Approving post: postId={}", postReview.getPostId());
+                postClient.approvePost(postReview.getPostId());
+            }
+        }catch (FeignException e) {
+            logger.warn("External post service is unavailable. Working with existing database records only", e);
+            throw e;
         }
+
     }
 
     private void updateDatabase() {
@@ -149,7 +158,11 @@ public class ReviewService {
             } else {
                 logger.debug("No new posts to add to review database");
             }
-        } catch (Exception e) {
+
+        }
+        catch (FeignException e) {
+            logger.warn("External post service is unavailable. Working with existing database records only", e);
+        }catch (Exception e) {
             logger.error("Error updating review database", e);
             throw e;
         }
