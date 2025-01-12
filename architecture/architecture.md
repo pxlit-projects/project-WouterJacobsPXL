@@ -1,6 +1,6 @@
 # Architecture
 
-![Architecture](./assets/FullStackJavaArchitectureV1.drawio.svg)
+![Architecture](./assets/FullStackJavaArchitectureV2.drawio.svg)
 
 ## Backend
 The backend is written with in java with the Spring Cloud Framework.
@@ -8,11 +8,13 @@ The backend is written with in java with the Spring Cloud Framework.
 - Post-Service
 - Review-Service
 - Comment-Service
+- Email-Service
 - Discovery-Service
 - Config-Service
 - API-Gateway(-Service)
 ### Databases
-The databases are not yet a solid choice, depending on the flow of the program they still might change to just 3 SQL-databases but for now the most suitable solution is a mix of MongoDB and MariaDB like shown in the diagram.
+The databases consists of 3 MariaDB instances running on seperate containers.
+
 ### Communication between microservices
 For this I use RabbitMQ for asynchronous communication and OpenFeign for synchronous communication.
 

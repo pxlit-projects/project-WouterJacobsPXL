@@ -114,13 +114,13 @@ public class ReviewService {
         try {
             if (postReview.getReviewStatus().equals(ReviewStatus.APPROVED)) {
                 logger.info("Approving post: postId={}", postReview.getPostId());
+                if (messageService != null) messageService.sendApprovalMessage("Post approved for post with review id: %d".formatted(reviewRequestDto.getReviewPostId()));
                 postClient.approvePost(postReview.getPostId());
             }
         }catch (FeignException e) {
             logger.warn("External post service is unavailable. Working with existing database records only", e);
             throw e;
         }
-
     }
 
     private void updateDatabase() {

@@ -15,7 +15,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    @RabbitListener(queues = "rejectionQueue")
+    @RabbitListener(queues = "statusInformationQueue")
     public void listen(String in) {
         logger.info("Received message from RabbitMQ queue: {}", in);
 
@@ -23,13 +23,19 @@ public class EmailService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("wouter.noreply@gmail.com");
             message.setTo("wouter.jacobs@student.pxl.be");
-            message.setSubject("Post rejected");
-            message.setText(in);
+
+            if (in.startsWith("Review Approved:")) {
+                message.setSubject("Post Approved");
+                message.setText("Your post has been approved.\n\n" + in);
+            } else {
+                message.setSubject("Post Rejected");
+                message.setText("Your post has been rejected.\n\n" + in);
+            }
 
             mailSender.send(message);
-            logger.info("Rejection email sent successfully");
+            logger.info("Email sent successfully for message: {}", in);
         } catch (Exception e) {
-            logger.error("Error sending rejection email", e);
+            logger.error("Error sending email", e);
         }
     }
 }

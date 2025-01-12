@@ -18,7 +18,7 @@ function Verify-Command {
     if (-not (Get-Command $Command -ErrorAction SilentlyContinue)) {
         Write-Log "$Command is not installed or not in PATH. Exiting..." "ERROR"
         exit 1
-    }else{
+    } else {
         Write-Log "$Command is installed ..."
     }
 }
@@ -54,7 +54,7 @@ $dockerfiles = Get-ChildItem -Path $currentDir -Recurse -Filter Dockerfile
 foreach ($dockerfile in $dockerfiles) {
     # Get the directory containing the Dockerfile
     $dockerDir = $dockerfile.DirectoryName
-    $imageName = (Split-Path -Leaf $dockerDir).ToLower() 
+    $imageName = (Split-Path -Leaf $dockerDir).ToLower()
     Write-Host "Building Docker image: $imageName from $dockerDir..."
 
     # Build the Docker image
@@ -65,8 +65,8 @@ foreach ($dockerfile in $dockerfiles) {
     }
 }
 
-# Step 3: Package Angular application
-Write-Host "Packaging the Angular frontend application..."
+# Step 3: Package and test Angular application
+Write-Host "Testing and packaging the Angular frontend application..."
 
 Set-Location ..\..\frontend-web\PXLFullstackJavaProjectFrontend
 
@@ -78,9 +78,17 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
+# Run Angular tests
+Write-Host "Running Angular unit tests..."
+ng test --code-coverage --no-watch         
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Angular unit tests failed. Exiting..." -ForegroundColor Red
+    exit $LASTEXITCODE
+}
+
 # Build the Angular project
-    Write-Host "Building Angular application..."
-    ng build --configuration production --no-progress
+Write-Host "Building Angular application..."
+ng build --configuration production --no-progress
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Angular build failed. Exiting..." -ForegroundColor Red

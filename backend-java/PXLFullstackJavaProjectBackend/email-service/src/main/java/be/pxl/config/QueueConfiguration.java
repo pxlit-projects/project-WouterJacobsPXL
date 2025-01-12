@@ -11,9 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class QueueConfiguration {
     @Bean
-    public Queue myQueue() {
-        return new Queue("rejectionQueue", false);
+    public Queue statusInformationQueue() {
+        return new Queue("statusInformationQueue", false);
     }
+
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
